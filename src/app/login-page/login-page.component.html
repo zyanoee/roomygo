@@ -1,0 +1,30 @@
+<body>
+<app-navbar></app-navbar>
+<br>
+
+<div class="login-page">
+
+  <div>
+    <button class="corner-button"(click)="goToHomePage()">Home</button>
+  </div>
+
+    <div class="login-form">
+      <h2>Login</h2>
+      <div class="form-field">
+        <label for="username">Username</label>
+        <input type="text" id="username" [(ngModel)]="username" required>
+      </div>
+      <div class="form-field">
+        <label for="password">Password</label>
+        <input type="password" id="password" [(ngModel)]="password" required>
+      </div>
+      <button class="login-button" (click)="login()">Login</button>
+      <button class="register-button" (click)="goToRegister()">Registrati</button>
+    </div>
+      <div class="alert-overlay" *ngIf="showAlert">
+        <div class="alert-box" [ngClass]="{'success': successAlert&&!duj7, 'error': !successAlert&&!duj7, 'warning': !successAlert&&duj7}">
+          {{ alertMessage }}
+        </div>
+      </div>
+  </div>
+</body>

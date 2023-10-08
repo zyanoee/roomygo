@@ -1,0 +1,23 @@
+<body>
+<app-navbar></app-navbar>
+<br>
+<div class="main-page">
+
+  <div class="grid-container">
+    <ng-container *ngIf="stanze && stanze.length > 0; else noRooms">
+      <div class="grid-item" *ngFor="let stanza of stanze">
+        <div class="image" [style.background-image]="'url(' + imageUrls[stanza.nome] + ')'" [style.background-color]="'blue'"></div>
+        <div class="nome">
+          <div class="nome">{{ stanza.nome }}</div>
+        </div>
+        <div class="prezzo">
+          <div class="prezzo">{{ stanza.prezzo }}</div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #noRooms>
+      <div class="no-rooms-message">Nessuna stanza attualmente disponibile</div>
+    </ng-template>
+  </div>
+</div>
+</body>

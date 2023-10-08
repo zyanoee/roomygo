@@ -1,0 +1,39 @@
+<body>
+<app-navbar></app-navbar>
+<br>
+<div class="register-page">
+  
+    <div class="register-form">
+      <h2>Registrazione</h2>
+      <div class="form-field">
+        <label for="username">Username</label>
+        <input type="text" id="username" [(ngModel)]="username" required>
+      </div>
+      <div class="form-field">
+        <label for="password">Password</label>
+        <input type="password" id="password" [(ngModel)]="password" required>
+      </div>
+      <div class="form-field">
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" [(ngModel)]="nome" required>
+      </div>
+      <button class="register-button" (click)="register()">Registrati</button>
+    </div>
+    <div class="alert-overlay" *ngIf="showAlert">
+        <div class="alert-box" [ngClass]="{'success': successAlert&&!duj7, 'error': !successAlert&&!duj7, 'warning': !successAlert&&duj7}">
+          {{ alertMessage }}
+        </div>
+      </div>
+    <div class="alerts">
+      <div class="success-alert" *ngIf="registrationSuccess">
+        Registrazione avvenuta con successo!
+      </div>
+      <div class="error-alert" *ngIf="registrationError">
+        Registrazione non andata a buon fine.
+      </div>
+      <div class="warning-alert" *ngIf="inputError">
+        Si prega di riempire tutti i campi.
+      </div>
+    </div>
+  </div>
+</body>

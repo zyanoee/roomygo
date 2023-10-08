@@ -1,0 +1,33 @@
+ <div>
+    <button class="corner-button"(click)="goToHomePage()">Home</button>
+  </div>
+
+    <div class="create-room">
+        <form>
+        <div class="create-form">
+            <div>
+              <label for="nome">Nome Stanza</label>
+              <input type="text" id="nome" name="nome" [(ngModel)]="nome" required>
+            </div>
+            <div>
+              <label for="indirizzo">Indirizzo</label>
+              <input type="text" id="indirizzo" name="indirizzo" [(ngModel)]="indirizzo" required>
+            </div>
+            <div>
+              <label for="prezzo">Prezzo</label>
+              <input type="text" id="prezzo" name="prezzo" [(ngModel)]="prezzo" required>
+            </div>
+            <div>
+              <label for="image">Immagine</label>
+              <input type="file" id="image" name="image" (change)="handleImageInput($event)">
+            </div>
+            <button type="button" (click)="createRoom()">Crea Stanza</button>
+        </div>
+        </form>
+      
+
+      <div class="success-message" *ngIf="roomCreated">
+        Stanza creata con successo
+      </div>
+  </div>
+  

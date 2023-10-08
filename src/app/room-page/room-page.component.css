@@ -1,0 +1,32 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+}
+
+.grid-container {
+    margin-top: 50px; /* Sposta la griglia in basso di 20 pixel */
+    background-color: aquamarine;
+  }
+
+.grid-image {
+    max-width: 100%;  /* La larghezza massima sarà uguale alla larghezza della cella di griglia. */
+    max-height: 90%; /* L'altezza massima sarà uguale all'altezza della cella di griglia. */
+    width: auto;      /* Imposta la larghezza automaticamente in base all'altezza per mantenere l'aspetto originale dell'immagine. */
+    height: auto;     /* Imposta l'altezza automaticamente in base alla larghezza per mantenere l'aspetto originale dell'immagine. */
+  }
+
+  .picker {
+    margin-top: 20%;
+  }
+
+  .button{
+    margin-bottom: 20%;
+  }
+
+  .icon-size-large {
+    transform: scale(3)
+  }
+
+.internalMatGrid{  min-width:80%;}

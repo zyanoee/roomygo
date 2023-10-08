@@ -1,0 +1,32 @@
+<div class="profile-card">
+    <div class="profile-back"></div>
+    <img class="rounded-circle profile-pic" src="assets/logos/defaultuser.png" />
+    <h3 class="profile-name">`{{ username }}`</h3>
+  
+    <!-- Layout a tre colonne -->
+    <div class="profile-layout">
+      <!-- Colonna sinistra per la descrizione -->
+      <div class="profile-column description-left">
+        <h4>Su di me:</h4>
+        <p class="profile-bio">
+          `{{ user.descrizione }}`
+        </p>
+      </div>
+      
+      <!-- Colonna centrale per le informazioni di base -->
+      <div class="profile-column">
+        <h4>Informazioni di base</h4>
+        <p><strong>Nome:</strong> `{{ user.nome }}`</p>
+        <p><strong>Username:</strong> `{{ user.username }}`</p>
+        <p><strong>Telefono:</strong> `{{ user.telefono }}`</p>
+      </div>
+      
+      <!-- Colonna destra per i link utente -->
+      <div class="profile-column description-right">
+        <h4>Link utente</h4>
+        <ul class="user-links">
+          <li *ngFor="let link of userLinks">{{ link }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,37 @@
+<div class="menu-bar">
+    <div class="logo-container">
+      <img class="logo" src="assets/logos/roomygologo.png" alt="RoomyGo Logo">
+    </div>
+    <div class="buttons-container">
+      <div class="addRoom-container">
+        <a routerLink="/login" *ngIf="!authenticated; else roomLink">
+         <img class="addroom-logo" src="assets/logos/addRoom.png" alt="AddRoom Logo">
+       </a>
+        <ng-template #roomLink>
+          <a [routerLink]="'/user/' + username + '/addRoom/'">
+            <img class="addroom-logo" src="assets/logos/addRoom.png" alt="AddRoom Logo">
+         </a>
+        </ng-template>
+     </div>
+      <div class="user-container">
+        <a routerLink="/login" *ngIf="!authenticated; else userLink">
+         <img class="user-logo" src="assets/logos/{{ showOverlayLogo ? 'defaultuser.png' : 'overlayuser.png' }}" alt="User Logo" (mouseover)="showOverlayLogo = true" (mouseleave)="showOverlayLogo = false">
+       </a>
+        <ng-template #userLink>
+          <a [routerLink]="'/user/' + username">
+            <img class="user-logo" src="assets/logos/{{ showOverlayLogo ? 'overlayuser.png' : 'defaultuser.png' }}" alt="User Logo" (mouseover)="showOverlayLogo = true" (mouseleave)="showOverlayLogo = false">
+         </a>
+        </ng-template>
+     </div>
+      <div class="cart-container">
+        <a routerLink="/login" *ngIf="!authenticated; else cartLink">
+          <img class="cart-logo" src="assets/logos/{{ showCartoverlayLogo ? 'overlayuser.png' : 'defaultuser.png' }}" alt="Cart Logo" (mouseover)="showCartoverlayLogo = true" (mouseleave)="showCartoverlayLogo = false">
+        </a>
+        <ng-template #cartLink>
+         <a [routerLink]="'/user/' + username + '/cart'">
+            <img class="cart-logo" src="assets/logos/{{ showCartoverlayLogo ? 'overlayuser.png' : 'defaultuser.png' }}" alt="Cart Logo" (mouseover)="showCartoverlayLogo = true" (mouseleave)="showCartoverlayLogo = false">
+         </a>
+        </ng-template>
+      </div>
+    </div>
+  </div>
