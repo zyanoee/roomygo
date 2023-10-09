@@ -1,32 +1,56 @@
+
 body {
-    font-family: 'Open Sans', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f7f7f7;
 }
 
-.grid-container {
-    margin-top: 50px; /* Sposta la griglia in basso di 20 pixel */
-    background-color: aquamarine;
+.fotogrid{
+    background-color: white;
+    margin-top: 100px;
+    margin-left: 5%;
+    margin-right: 5%;
+    border-radius: 25px;
+}
+
+.griglia{
+    margin-top: 100px;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+
+.object-fit-cover {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.3s;
+    cursor: pointer
   }
 
-.grid-image {
-    max-width: 100%;  /* La larghezza massima sarà uguale alla larghezza della cella di griglia. */
-    max-height: 90%; /* L'altezza massima sarà uguale all'altezza della cella di griglia. */
-    width: auto;      /* Imposta la larghezza automaticamente in base all'altezza per mantenere l'aspetto originale dell'immagine. */
-    height: auto;     /* Imposta l'altezza automaticamente in base alla larghezza per mantenere l'aspetto originale dell'immagine. */
+  .mat-grid-tile:hover .object-fit-cover {
+    opacity: 0.8; /* Cambia l'opacità al passaggio del mouse */
   }
 
-  .picker {
-    margin-top: 20%;
-  }
+.internalMatGrid{
+    height: 100%;
+    width: 100%;
+}
 
-  .button{
-    margin-bottom: 20%;
-  }
+.picker{
+    background-color: white;
+}
 
-  .icon-size-large {
-    transform: scale(3)
-  }
+.boxdatepicker{
 
-.internalMatGrid{  min-width:80%;}
+    width: 80%;
+    height: 80%;
+    border-radius: 25px;
+    background-color: rgb(212, 212, 212);
+}
+
+.infocard{
+    height: 100%;
+    width: 100%;
+}
+

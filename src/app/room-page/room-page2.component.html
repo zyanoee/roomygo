@@ -2,22 +2,49 @@
     <app-navbar></app-navbar>
     <br>
     <br>
-    <mat-grid-list cols="4" rowHeight="300px" class="grid-container">
+
+    <div class="fotogrid">
+    <mat-grid-list cols="4" rowHeight="300px" gutterSize="10">
+      <mat-grid-tile *ngFor="let photo of photos; let first = first" [colspan]="first ? 2 : 1" [rowspan]="first ? 2 : 1" style="border-radius: inherit;" >
+        <!-- Inserisci l'immagine qui utilizzando l'URL da 'photo' -->
+        <img [src]="photo" alt="Immagine" class="object-fit-cover">
+      </mat-grid-tile>
+    </mat-grid-list>
+    </div>
+    <br>
+    <br>
+
+    <mat-grid-list cols="2" rowHeight="300px" class=" griglia">
         <ng-container *ngFor="let tile of tiles">
           <mat-grid-tile [colspan]="tile.cols" [rowspan]="tile.rows" [style.background]="tile.color">
-            <ng-container [ngSwitch]="tile.component">
-              <ng-container *ngSwitchCase="'Foto'">
-                <img [src]="tile.imageUrl" alt="Immagine" class="grid-image">
+            <ng-container [ngSwitch]="tile.component" class=>
+
+              <ng-container *ngSwitchCase="'Informazioni'">
+                
+                <div class="internalMatGrid boxdatepicker">
+                  <mat-card class="infocard">
+                    <mat-card-header>
+                      <mat-card-title>Nome Stanza</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                      <p>{{descrizione}}</p>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+              
+
+
               </ng-container>
-              <ng-container *ngSwitchCase="'Descrizione'">
-                <div class="description">{{ descrizione }}</div>
-              </ng-container>
+
               <ng-container *ngSwitchCase="'Datepicker'">
-                <div class = 'internalMatGrid'>
-                  <mat-grid-list cols="2" rowheight="100px">
-                    <ng-container *ngFor="let tile of tiles3">
+                <div class="internalMatGrid boxdatepicker">
+                  <mat-grid-list cols="2" rowHeight="80px">
+                    <ng-container *ngFor="let tile of datepickergrid">
                       <mat-grid-tile [colspan]="tile.cols" [rowspan]="tile.rows" [style.background]="tile.color">
-                        <ng-container [ngSwitch]="tile.component">
+                        <ng-container [ngSwitch]="tile.component" class=>
+                          <ng-container *ngSwitchCase="'Prezzo'">
+                            <p>Prezzo</p>
+                          </ng-container>
                           <ng-container *ngSwitchCase="'Picker'">
                             <mat-form-field class="picker">
                               <mat-label>Checkin e Checkout</mat-label>
@@ -35,36 +62,23 @@
                           <ng-container *ngSwitchCase="'Button'">
                             <button mat-raised-button color="accent" class="button">Prenota ora!</button>
                           </ng-container>
+                          <ng-container *ngSwitchCase="'PrezzoTot'">
+                            <p>Prezzo Tot</p>
+                          </ng-container>
                         </ng-container>
                       </mat-grid-tile>
                     </ng-container>
                   </mat-grid-list>
                 </div>
               </ng-container>
+
+
               <ng-container *ngSwitchCase="'Servizi'">
-                <div class='internalMatGrid' >
-                <mat-grid-list cols="3" rowHeight="100px">
-                    <ng-container *ngFor="let tile of tiles2">
-                        <mat-grid-tile [colspan]="tile.cols" [rowspan]="tile.rows" [style.background]="tile.color">
-                            <ng-container [ngSwitch]="tile.component">
-                                <ng-container *ngSwitchCase="'Titolo'">
-                                    <div class="titolo">SERVIZI DISPONIBILI</div>
-                                </ng-container>
-                                <ng-container *ngSwitchCase="'Wifi'">
-                                    <mat-icon svgIcon="wifi-red" aria-hidden="false" [attr.aria-label]="getAriaLabel(tile.icon) " class="icon-size-large"></mat-icon>
-                                </ng-container>
-                                <ng-container *ngSwitchCase="'Car'">
-                                    <mat-icon svgIcon="car-red" aria-hidden="false" [attr.aria-label]="getAriaLabel(tile.icon)" class="icon-size-large"></mat-icon>
-                                </ng-container>
-                                <ng-container *ngSwitchCase="'AC'">
-                                    <mat-icon svgIcon="ac-red" aria-hidden="false" [attr.aria-label]="getAriaLabel(tile.icon)" class="icon-size-large"></mat-icon>
-                                </ng-container>
-                            </ng-container>
-                        </mat-grid-tile>
-                    </ng-container>
-                </mat-grid-list>
-                </div>
+                
+                
+
               </ng-container>
+  
             </ng-container>
           </mat-grid-tile>
         </ng-container>

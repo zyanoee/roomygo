@@ -20,9 +20,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCardModule } from '@angular/material/card'; 
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { CarouselModule } from '@coreui/angular';
+import { NotFoundPageComponent } from './errorpages/notfoundpage/notfoundpage.component';
 
 @NgModule({
   declarations: [
@@ -33,25 +36,29 @@ import { MatButtonModule } from '@angular/material/button';
     CreateRoomComponent,
     UserPageComponent,
     NavbarComponent,
-    RoomPageComponent
+    RoomPageComponent,
+    NotFoundPageComponent
   ],
 
   imports: [
+
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
     MatSelectModule,
-    MatDatepickerModule, // Aggiunto MatDatepickerModule
+    MatDatepickerModule, 
     MatFormFieldModule,
     MatNativeDateModule,
     MatInputModule,
     MatGridListModule,
     MatIconModule,
     MatButtonModule,
+    MatCardModule,
     AppRoutingModule,
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    CarouselModule
   ],
   
   providers: [CookieService, ValidationService, MatDatepicker],

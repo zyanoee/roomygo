@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {NgFor} from '@angular/common';
 import {NgIf, JsonPipe} from '@angular/common';
 import {MatGridListModule} from '@angular/material/grid-list';
@@ -7,6 +7,11 @@ import {MatIconRegistry, MatIconModule} from '@angular/material/icon';
 import { FormControl, FormGroup } from '@angular/forms';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
+import { Stanza } from '../entity/Stanza';
+import { RoomService } from '../services/RoomService';
+import { Utente } from '../entity/Utente';
+import { ActivatedRoute, Router } from '@angular/router';
+import { catchError, map } from 'rxjs';
 
 const WIFI_RED = `<svg height="200px" width="200px" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-5.12 -5.12 522.24 522.24" xml:space="preserve" fill="#000000" stroke="#000000" stroke-width="8.192"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#ff0000;} </style> <g> <path class="st0" d="M0,180.942l52.247,52.248c112.324-112.334,295.181-112.334,407.505,0L512,180.942 C370.839,39.763,141.16,39.763,0,180.942z"></path> <path class="st0" d="M67.904,248.857l52.248,52.247c74.926-74.926,196.768-74.926,271.695,0l52.247-52.247 C340.388,145.16,171.612,145.16,67.904,248.857z"></path> <path class="st0" d="M135.828,316.781l52.248,52.238c37.454-37.454,98.393-37.454,135.848,0l52.247-52.238 C309.919,250.538,202.081,250.538,135.828,316.781z"></path> <path class="st0" d="M203.752,384.695L256,436.942l52.247-52.247C279.41,355.858,232.589,355.858,203.752,384.695z"></path> </g> </g></svg>`;
 const WIFI_GREEN = `<svg height="200px" width="200px" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-5.12 -5.12 522.24 522.24" xml:space="preserve" fill="#000000" stroke="#000000" stroke-width="8.192"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#4bcd42;} </style> <g> <path class="st0" d="M0,180.942l52.247,52.248c112.324-112.334,295.181-112.334,407.505,0L512,180.942 C370.839,39.763,141.16,39.763,0,180.942z"></path> <path class="st0" d="M67.904,248.857l52.248,52.247c74.926-74.926,196.768-74.926,271.695,0l52.247-52.247 C340.388,145.16,171.612,145.16,67.904,248.857z"></path> <path class="st0" d="M135.828,316.781l52.248,52.238c37.454-37.454,98.393-37.454,135.848,0l52.247-52.238 C309.919,250.538,202.081,250.538,135.828,316.781z"></path> <path class="st0" d="M203.752,384.695L256,436.942l52.247-52.247C279.41,355.858,232.589,355.858,203.752,384.695z"></path> </g> </g></svg>`;
@@ -31,19 +36,15 @@ export interface GridItem {
     cols: number;
     rows: number;
     color: string;
-    imageUrl?: string;
-    description?: string;
+    carousel?: boolean;
+    information?: boolean;
     title?: string;
-    icons?: string[];
+    icon?: string;
+    imgUrl?: string;
   }
 
-export interface GridItem2 {
-    component?: string;
-    cols: number;
-    rows: number;
-    color: string;
-    icon: string;
-}
+
+
 
 @Component({
     selector: 'app-roompage',
@@ -62,8 +63,14 @@ export interface GridItem2 {
         end: new FormControl<Date | null>(null),
       });
 
+    
+    room!: Stanza;
+    id!: string;
+    roomName!: string;
+    gestore!: Utente;
 
-    constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+
+    constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private roomService: RoomService, private route: ActivatedRoute, private router: Router) {
         iconRegistry.addSvgIconLiteral('car-red', sanitizer.bypassSecurityTrustHtml(CAR_RED));
         iconRegistry.addSvgIconLiteral('car-green', sanitizer.bypassSecurityTrustHtml(CAR_GREEN));
         iconRegistry.addSvgIconLiteral('wifi-red', sanitizer.bypassSecurityTrustHtml(WIFI_RED));
@@ -73,24 +80,74 @@ export interface GridItem2 {
       }
 
     tiles: GridItem[] = [
-    {component: 'Foto', cols: 1, rows: 1, color: 'lightblue', imageUrl: '/assets/bs5/img/RoomPlaceholder.png' },
-    {component: 'Informazioni', cols: 2, rows: 1, color: 'transparent'},
-    {component: 'Descrizione', cols: 1, rows: 2, color: 'lightgreen'}, 
-    {component: 'Datepicker', cols: 1, rows: 1, color: 'lightpink'}, 
-    {component: 'Servizi', cols: 2, rows: 1, color: '#DDBDF1'}, 
+      {component: 'Informazioni', cols: 1, rows: 1, color: 'transparent',},
+      {component: 'Datepicker', cols: 1, rows: 1, color: 'transparent'}, 
+      {component: 'Servizi', cols: 2, rows: 1, color: 'transparent'}, 
     ];
 
-    tiles2: GridItem2[] = [
-        {component: 'Titolo',  cols: 3, rows: 1, color: '#DDBDF1', icon: ''},
-        {component: 'Wifi', cols: 1, rows: 1, color: '#DDBDF1', icon: 'wifi-red'},
-        {component: 'Car', cols: 1, rows: 1, color: '#DDBDF1', icon: 'car-red'},
-        {component: 'AC', cols: 1, rows: 1, color: '#DDBDF1', icon: 'ac-red'},
+    servizigrid: GridItem[] = [
+        {component: 'Titolo',  cols: 3, rows: 1, color: 'transparent', icon: ''},
+        {component: 'Wifi', cols: 1, rows: 1, color: 'transparent', icon: 'wifi-red'},
+        {component: 'Car', cols: 1, rows: 1, color: 'transparent', icon: 'car-red'},
+        {component: 'AC', cols: 1, rows: 1, color: 'transparent', icon: 'ac-red'},
     ];
 
-    tiles3: GridItem[] = [
+    datepickergrid: GridItem[] = [
+      {component: 'Prezzo', cols: 2, rows: 1, color: 'transparent'},
       {component: 'Picker', cols: 2, rows: 1, color: 'transparent'},
-      {component: 'Button', cols: 2, rows: 1, color: 'transparent'}
+      {component: 'Button', cols: 2, rows: 1, color: 'transparent'},
+      {component: 'PrezzoTot', cols: 2, rows: 1, color: 'transparent'}
     ]
+
+    informazionigrid: GridItem[] = [
+      {component: 'Nomestanza', cols: 2, rows: 1, color: 'transparent'},
+      {component: 'Informazioni', cols: 2, rows: 2, color: 'transparent'},
+      {component: 'Letti', cols: 2, rows: 1, color: 'transparent'}
+    ]
+
+    photos: string[]=[
+      './assets/bs5/img/test/A.png',
+      './assets/bs5/img/test/B.png',
+      './assets/bs5/img/test/C.png'
+    ]
+
+
+
+
+    ngOnInit(): void {
+      this.getRoomId();
+      
+     
+    }
+
+    getRoomId(): void{
+      this.route.paramMap.subscribe(params => {
+        const roomId = params.get('id');
+        if (roomId) {
+          this.loadRoom(roomId);
+        }
+    });
+    }
+  
+
+
+    loadRoom(id: string): void{
+      this.roomService.getRoom(id).subscribe(
+        (stanza: Stanza) => {
+          this.room = stanza; 
+        },
+        error => {
+          //this.goTo404();
+        }
+  
+      );
+
+    }
+
+    goTo404(): void {
+      this.router.navigate(['../notfound']);
+    }
+
 
 
     getAriaLabel(iconName: string): string {

@@ -9,6 +9,7 @@
     position: fixed;
     margin-top:0;
     padding: 0;
+    z-index: 1000;
   }
   .logo {
     width: 120px;

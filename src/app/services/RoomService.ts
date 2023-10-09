@@ -36,26 +36,28 @@ export class RoomService {
   //Metodo per ottenere una certa stanza
   getRoom(id: string): Observable<Stanza>{
     const url = `${this.apiUrl}/rooms/${id}`;
-    return this.http.get<Stanza>(url).pipe(map(data => new Stanza(
-            data.id,
-            data.nome,
-            data.indirizzo,
-            data.gestore,
-            data.prezzo,
-            data.descrizione,
-            data.carserv,
-            data.wifiserv,
-            data.acserv
-    )))
-    catchError((error: HttpErrorResponse) => {
-      if (error.status === 404) {
-        console.error('La stanza non è stata trovata.');
-        return of(null); // Restituisci null in caso di errore 404
-      } else {
-        // Gestisci altri errori
-        console.error('Si è verificato un errore durante il recupero della stanza.', error);
-        return throwError(error);
-      }
-    });
+    return this.http.get<Stanza>(url).pipe(
+      map(data => new Stanza(
+        data.id,
+        data.nome,
+        data.indirizzo,
+        data.gestore,
+        data.prezzo,
+        data.descrizione,
+        data.carserv,
+        data.wifiserv,
+        data.acserv
+      )),
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          console.error('La stanza non è stata trovata.');
+          return throwError('La stanza non è stata trovata.'); // Restituisci un errore personalizzato in caso di errore 404
+        } else {
+          // Gestisci altri errori
+          console.error('Si è verificato un errore durante il recupero della stanza.', error);
+          return throwError('Si è verificato un errore durante il recupero della stanza.');
+        }
+      })
+    );
   }
 }

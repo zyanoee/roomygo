@@ -6,22 +6,24 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { CreateRoomComponent } from './create-room/create-room.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { RoomPageComponent } from './room-page/room-page2.component';
+import { NotFoundPageComponent } from './errorpages/notfoundpage/notfoundpage.component';
 
 const routes: Routes = [
-  {path: 'room/:id', component: RoomPageComponent},
+  { path: 'room/:id', component: RoomPageComponent},
   { path: 'register', component: RegisterPageComponent },
+  { path: 'notfound', component: NotFoundPageComponent },
   { path: '', component: MainPageComponent},
-  {path: 'login', component: LoginPageComponent},
-  {path: 'user', component: MainPageComponent},
-  {path: 'user/:username', component: UserPageComponent},
-  {path: 'user/:username/addRoom', component: CreateRoomComponent},
-  {path: 'user/:username/cart', component: MainPageComponent},
+  { path: 'login', component: LoginPageComponent},
+  { path: 'user', component: MainPageComponent},
+  { path: 'user/:username', component: UserPageComponent},
+  { path: 'user/:username/addRoom', component: CreateRoomComponent},
+  { path: 'user/:username/cart', component: MainPageComponent},
  
 
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), RouterModule.forChild(routes)],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
