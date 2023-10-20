@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
@@ -34,5 +34,11 @@ export class PhotoService {
     formData.append('username', username);
 
     return this.http.post('http://localhost:8081/photo/download', formData, { responseType: 'blob'});
+  }
+
+  getImageUrlObservable(nomeStanza: string, gestore: string): Observable<string> {
+    return this.downloadPhoto(nomeStanza, gestore).pipe(
+      map((blob: Blob) => URL.createObjectURL(blob))
+    );
   }
 }

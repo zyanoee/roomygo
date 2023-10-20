@@ -12,6 +12,9 @@ import { RoomService } from '../services/RoomService';
 import { Utente } from '../entity/Utente';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, map } from 'rxjs';
+import { differenceInDays } from 'date-fns';
+import { PhotoService } from '../services/PhotoService';
+import { CarrelloService } from '../services/CarrelloService';
 
 const WIFI_RED = `<svg height="200px" width="200px" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-5.12 -5.12 522.24 522.24" xml:space="preserve" fill="#000000" stroke="#000000" stroke-width="8.192"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#ff0000;} </style> <g> <path class="st0" d="M0,180.942l52.247,52.248c112.324-112.334,295.181-112.334,407.505,0L512,180.942 C370.839,39.763,141.16,39.763,0,180.942z"></path> <path class="st0" d="M67.904,248.857l52.248,52.247c74.926-74.926,196.768-74.926,271.695,0l52.247-52.247 C340.388,145.16,171.612,145.16,67.904,248.857z"></path> <path class="st0" d="M135.828,316.781l52.248,52.238c37.454-37.454,98.393-37.454,135.848,0l52.247-52.238 C309.919,250.538,202.081,250.538,135.828,316.781z"></path> <path class="st0" d="M203.752,384.695L256,436.942l52.247-52.247C279.41,355.858,232.589,355.858,203.752,384.695z"></path> </g> </g></svg>`;
 const WIFI_GREEN = `<svg height="200px" width="200px" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-5.12 -5.12 522.24 522.24" xml:space="preserve" fill="#000000" stroke="#000000" stroke-width="8.192"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#4bcd42;} </style> <g> <path class="st0" d="M0,180.942l52.247,52.248c112.324-112.334,295.181-112.334,407.505,0L512,180.942 C370.839,39.763,141.16,39.763,0,180.942z"></path> <path class="st0" d="M67.904,248.857l52.248,52.247c74.926-74.926,196.768-74.926,271.695,0l52.247-52.247 C340.388,145.16,171.612,145.16,67.904,248.857z"></path> <path class="st0" d="M135.828,316.781l52.248,52.238c37.454-37.454,98.393-37.454,135.848,0l52.247-52.238 C309.919,250.538,202.081,250.538,135.828,316.781z"></path> <path class="st0" d="M203.752,384.695L256,436.942l52.247-52.247C279.41,355.858,232.589,355.858,203.752,384.695z"></path> </g> </g></svg>`;
@@ -39,8 +42,16 @@ export interface GridItem {
     carousel?: boolean;
     information?: boolean;
     title?: string;
-    icon?: string;
+    
     imgUrl?: string;
+  }
+
+  export interface IconItem {
+    component?: string;
+    cols: number;
+    rows: number;
+    color: string;
+    icon: string;
   }
 
 
@@ -63,14 +74,28 @@ export interface GridItem {
         end: new FormControl<Date | null>(null),
       });
 
+
     
     room!: Stanza;
     id!: string;
     roomName!: string;
     gestore!: Utente;
+    numeroGiorni!: number;
+
+    iconsRed: string[]=[
+      'wifi-red',
+      'car-red',
+      'ac-red'
+    ]
+
+    iconsGreen: string[]=[
+      'wifi-green',
+      'car-green',
+      'ac-green'
+    ]
 
 
-    constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private roomService: RoomService, private route: ActivatedRoute, private router: Router) {
+    constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private roomService: RoomService, private photoService: PhotoService, private carrelloService: CarrelloService, private route: ActivatedRoute, private router: Router) {
         iconRegistry.addSvgIconLiteral('car-red', sanitizer.bypassSecurityTrustHtml(CAR_RED));
         iconRegistry.addSvgIconLiteral('car-green', sanitizer.bypassSecurityTrustHtml(CAR_GREEN));
         iconRegistry.addSvgIconLiteral('wifi-red', sanitizer.bypassSecurityTrustHtml(WIFI_RED));
@@ -85,7 +110,7 @@ export interface GridItem {
       {component: 'Servizi', cols: 2, rows: 1, color: 'transparent'}, 
     ];
 
-    servizigrid: GridItem[] = [
+    servizigrid: IconItem[] = [
         {component: 'Titolo',  cols: 3, rows: 1, color: 'transparent', icon: ''},
         {component: 'Wifi', cols: 1, rows: 1, color: 'transparent', icon: 'wifi-red'},
         {component: 'Car', cols: 1, rows: 1, color: 'transparent', icon: 'car-red'},
@@ -106,9 +131,10 @@ export interface GridItem {
     ]
 
     photos: string[]=[
-      './assets/bs5/img/test/A.png',
-      './assets/bs5/img/test/B.png',
-      './assets/bs5/img/test/C.png'
+      '/assets/bs5/img/test/A.png',
+      '/assets/bs5/img/test/B.png',
+      '/assets/bs5/img/test/C.png',
+      
     ]
 
 
@@ -124,6 +150,7 @@ export interface GridItem {
       this.route.paramMap.subscribe(params => {
         const roomId = params.get('id');
         if (roomId) {
+          this.id = roomId;
           this.loadRoom(roomId);
         }
     });
@@ -135,9 +162,11 @@ export interface GridItem {
       this.roomService.getRoom(id).subscribe(
         (stanza: Stanza) => {
           this.room = stanza; 
+          this.photoService.getImageUrlObservable(this.room.nome, this.room.gestore).subscribe(url => {
+            this.photos.unshift(url);})
         },
         error => {
-          //this.goTo404();
+          this.goTo404();
         }
   
       );
@@ -146,6 +175,40 @@ export interface GridItem {
 
     goTo404(): void {
       this.router.navigate(['../notfound']);
+    }
+
+    calcolaDifferenzaInGiorni(): void {
+      const startDate = this.range.get('start')?.value;
+      const endDate = this.range.get('end')?.value;
+      if (startDate && endDate) {
+        this.numeroGiorni = differenceInDays(endDate, startDate);
+      }
+
+    }
+
+    prenota(){
+      const startDate = this.range.get('start')?.value;
+      const endDate = this.range.get('end')?.value;
+      if(startDate && endDate){
+        this.carrelloService.add(this.id, startDate, this.numeroGiorni).subscribe(
+          (result: number) => {
+            if(result===1) {
+              //TODO OPERAZIONE RIUSCITA MOSTRARE POPUP VERDE "Aggiunto correttamente al Carrello"
+            }
+            if(result === 2){
+              //TODO OPERAZIONE NON RIUSCITA STANZA GIA OCCUPATA NEL RANGE DI DATE 
+            }
+            if(result === 3){
+              //OPERAZIONE NON RIUSCITA STANZA INESISTENTE (improbabile accada dato che il controllo stanza è gia fatto in precedenza ma controllo in più non fa male)
+            } else {
+              //TODO OPERAZIONE NON RIUSCITA (generico)
+            }
+          },
+          (error) => {
+            //TODO OPERAZIONE NON RIUSCITA (generico)
+          }
+        )
+      }
     }
 
 

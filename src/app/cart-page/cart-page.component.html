@@ -1,0 +1,52 @@
+<body>
+<app-navbar></app-navbar>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="container">
+    <mat-grid-list cols="1" rowHeight="300px" class="grid" gutterSize="5px">
+        <mat-grid-tile *ngFor="let elm of elementi" [colspan]="1" [rowspan]="1" [style.background]="'transparent'" class="background">
+        <div class="internalMatGrid" style="margin:15px;border-radius: 12px;">
+            <mat-grid-list cols="12" rowHeight="300px">
+                <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'transparent'">
+                    <div class="example-button-container">
+                        <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon" (click)="rimuovi(elm.id)">
+                          <mat-icon>clear</mat-icon>
+                        </button>
+                      </div>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="11" [rowspan]="1" [style.background]="'transparent'">
+                    <div class="heightwidth" >
+                        <mat-grid-list cols="2" rowHeight="300px">
+                            <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'transparent'">
+                                <div class="square">
+                                    <img [src]="getUrl(elm)" class="immagine">
+                                </div>    
+                            </mat-grid-tile>
+                            
+                            <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'transparent'">
+                            <div class="iinternalMatGrid">
+                                    <h1>{{ getRoom(elm).nome }}</h1>
+                                    <h3>{{ getRoom(elm).indirizzo}}</h3>
+                                    <h3>{{ "Checkin: " + elm.giorno }}</h3>
+                                    <h3>{{ "Notti: "+elm.ngiorni+", Prezzo: "+elm.prezzo}}</h3>
+                                </div>
+                            </mat-grid-tile>
+                            
+                        </mat-grid-list>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </div>
+        
+          
+           
+    
+        </mat-grid-tile>
+      </mat-grid-list>
+</div>
+</body>
+

@@ -43,14 +43,18 @@ body {
 
 .boxdatepicker{
 
-    width: 80%;
-    height: 80%;
+    width: 90%;
+    height: 90%;
     border-radius: 25px;
-    background-color: rgb(212, 212, 212);
+    background-color: rgb(236, 236, 236);
 }
 
 .infocard{
     height: 100%;
     width: 100%;
+}
+
+.icon-size-large{
+    transform: scale(2.5);
 }
 

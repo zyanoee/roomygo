@@ -26,6 +26,10 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { CarouselModule } from '@coreui/angular';
 import { NotFoundPageComponent } from './errorpages/notfoundpage/notfoundpage.component';
+import { differenceInDays } from 'date-fns';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatMenuModule} from '@angular/material/menu';
+import { CartPageComponent } from './cart-page/cart-page.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +41,8 @@ import { NotFoundPageComponent } from './errorpages/notfoundpage/notfoundpage.co
     UserPageComponent,
     NavbarComponent,
     RoomPageComponent,
-    NotFoundPageComponent
+    NotFoundPageComponent,
+    CartPageComponent
   ],
 
   imports: [
@@ -54,11 +59,13 @@ import { NotFoundPageComponent } from './errorpages/notfoundpage/notfoundpage.co
     MatIconModule,
     MatButtonModule,
     MatCardModule,
+    MatToolbarModule,
+    MatMenuModule,
     AppRoutingModule,
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    CarouselModule
+    CarouselModule,
   ],
   
   providers: [CookieService, ValidationService, MatDatepicker],

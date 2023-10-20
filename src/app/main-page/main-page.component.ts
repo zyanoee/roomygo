@@ -29,20 +29,20 @@ export class MainPageComponent {
     private cookieService: CookieService, 
     private validationService: ValidationService,
     private photoService: PhotoService) {
+    
+  }
+
+
+  async ngOnInit() {
     const accessToken = this.cookieService.get('accessToken');
-
-
-    if (accessToken && this.validationService.validate(accessToken)) {
+    if (accessToken && (await this.validationService.validateToken(accessToken))) {
       this.username = this.cookieService.get('username');
       this.authenticated = true;
     } else {
       this.authenticated = false;
       this.username = "";
     }
-  }
-
-
-  ngOnInit(): void {
+  
     this.http.get<Stanza[]>('http://localhost:8081/room')
       .subscribe((data) => {
         this.stanze = data.map((item: any) => {

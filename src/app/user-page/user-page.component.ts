@@ -24,15 +24,13 @@ import { Utente } from '../entity/Utente';
     user!: Utente;
     userLinks: string[] = [];
 
-  constructor(private roomService: RoomService, private userService: UserService) { }
+  constructor(private roomService: RoomService, private userService: UserService) {
+    
+   }
 
     ngOnInit(): void {
-          // Ottieni le stanze dell'utente dal servizio
-          this.roomService.getUserRooms(this.username).subscribe(data => {
-            this.userRooms = data;
-          });
-          this.userService.getUser(this.username).subscribe(data => {this.user = data;});
-          this.userService.getUserLink(this.username).subscribe(data => {this.userLinks = data;});
+      this.userService.getUser(this.username).subscribe(data => {this.user = data;});
+          
         
     }
 

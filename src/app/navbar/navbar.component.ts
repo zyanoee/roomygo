@@ -5,6 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { ValidationService } from '../services/ValidationService';
 import { PhotoService } from '../services/PhotoService';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-navbar',
@@ -24,10 +25,16 @@ export class NavbarComponent {
     private cookieService: CookieService, 
     private validationService: ValidationService,
     private photoService: PhotoService) {
+      
+      
+
+    }
+
+  
+
+  async ngOnInit() {
     const accessToken = this.cookieService.get('accessToken');
-
-
-    if (accessToken && this.validationService.validate(accessToken)) {
+    if (accessToken && (await this.validationService.validateToken(accessToken))) {
       this.username = this.cookieService.get('username');
       this.authenticated = true;
     } else {

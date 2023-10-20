@@ -13,7 +13,7 @@ export class RoomService {
 
   // Metodo per ottenere le stanze di un utente
   getUserRooms(username: string): Observable<Stanza[]> {
-    const url = `${this.apiUrl}/${username}/rooms`;
+    const url = `${this.apiUrl}/${username}/room`;
     return this.http.get<any[]>(url).pipe(
         map(data => {
           // Ogni elemento di data è un oggetto stanza dal backend
@@ -35,7 +35,7 @@ export class RoomService {
 
   //Metodo per ottenere una certa stanza
   getRoom(id: string): Observable<Stanza>{
-    const url = `${this.apiUrl}/rooms/${id}`;
+    const url = `${this.apiUrl}/room/${id}`;
     return this.http.get<Stanza>(url).pipe(
       map(data => new Stanza(
         data.id,

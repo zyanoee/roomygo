@@ -4,6 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Route, Router } from '@angular/router';
+import { ValidationService } from '../services/ValidationService';
 
 @Component({
   selector: 'app-login-page',
@@ -22,6 +23,9 @@ export class LoginPageComponent {
   duj7 = false;
   alertMessage = '';
 
+  ngOnInit(){
+    this.validationService.refresh();
+  }
 
   showNotification(message: string, success: boolean, warning: boolean) {
     this.alertMessage = message;
@@ -38,7 +42,7 @@ export class LoginPageComponent {
     this.showAlert = false;
   }
 
-  constructor(private http: HttpClient, private cookieService: CookieService, private router: Router) { }
+  constructor(private http: HttpClient, private cookieService: CookieService, private router: Router, private validationService: ValidationService) { }
 
   login(): void {
     if (this.username && this.password) {

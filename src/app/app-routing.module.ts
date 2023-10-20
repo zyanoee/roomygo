@@ -7,6 +7,7 @@ import { CreateRoomComponent } from './create-room/create-room.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { RoomPageComponent } from './room-page/room-page2.component';
 import { NotFoundPageComponent } from './errorpages/notfoundpage/notfoundpage.component';
+import { CartPageComponent } from './cart-page/cart-page.component';
 
 const routes: Routes = [
   { path: 'room/:id', component: RoomPageComponent},
@@ -17,7 +18,8 @@ const routes: Routes = [
   { path: 'user', component: MainPageComponent},
   { path: 'user/:username', component: UserPageComponent},
   { path: 'user/:username/addRoom', component: CreateRoomComponent},
-  { path: 'user/:username/cart', component: MainPageComponent},
+  { path: 'user/:username/cart', component: CartPageComponent},
+  
  
 
 ];

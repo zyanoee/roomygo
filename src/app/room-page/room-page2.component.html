@@ -16,7 +16,7 @@
 
     <mat-grid-list cols="2" rowHeight="300px" class=" griglia">
         <ng-container *ngFor="let tile of tiles">
-          <mat-grid-tile [colspan]="tile.cols" [rowspan]="tile.rows" [style.background]="tile.color">
+          <mat-grid-tile [colspan]="tile.cols" [rowspan]="tile.rows" [style.background]="'lightblue'">
             <ng-container [ngSwitch]="tile.component" class=>
 
               <ng-container *ngSwitchCase="'Informazioni'">
@@ -24,10 +24,12 @@
                 <div class="internalMatGrid boxdatepicker">
                   <mat-card class="infocard">
                     <mat-card-header>
-                      <mat-card-title>Nome Stanza</mat-card-title>
+                      <mat-card-title><h4>{{ room.nome }}</h4></mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                      <p>{{descrizione}}</p>
+                      <p>{{room.descrizione}}</p>
+                      <br>
+                      <p>{{room.indirizzo}}</p>
                     </mat-card-content>
                   </mat-card>
                 </div>
@@ -38,21 +40,20 @@
 
               <ng-container *ngSwitchCase="'Datepicker'">
                 <div class="internalMatGrid boxdatepicker">
-                  <mat-grid-list cols="2" rowHeight="80px">
-                    <ng-container *ngFor="let tile of datepickergrid">
+                  <mat-grid-list cols="2" rowHeight="70px" style="max-height: 100%;max-width: 100%;">
+                    <ng-container *ngFor="let tile of datepickergrid" >
                       <mat-grid-tile [colspan]="tile.cols" [rowspan]="tile.rows" [style.background]="tile.color">
                         <ng-container [ngSwitch]="tile.component" class=>
                           <ng-container *ngSwitchCase="'Prezzo'">
-                            <p>Prezzo</p>
+                            <p>Prezzo per giorno: € {{room.prezzo}}</p>
                           </ng-container>
                           <ng-container *ngSwitchCase="'Picker'">
                             <mat-form-field class="picker">
                               <mat-label>Checkin e Checkout</mat-label>
                               <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-                                <input matStartDate formControlName="start" placeholder="Start date">
-                                <input matEndDate formControlName="end" placeholder="End date">
+                                <input matStartDate formControlName="start" placeholder="Start date" (dateChange)="calcolaDifferenzaInGiorni()">
+                                <input matEndDate formControlName="end" placeholder="End date" (dateChange)="calcolaDifferenzaInGiorni()">
                               </mat-date-range-input>
-                              <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
                               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                               <mat-date-range-picker #picker></mat-date-range-picker>
                               <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
@@ -60,10 +61,10 @@
                             </mat-form-field>
                           </ng-container>
                           <ng-container *ngSwitchCase="'Button'">
-                            <button mat-raised-button color="accent" class="button">Prenota ora!</button>
+                            <button mat-raised-button color="accent" class="button" (click)='prenota()'>Aggiungi al carrello!</button>
                           </ng-container>
                           <ng-container *ngSwitchCase="'PrezzoTot'">
-                            <p>Prezzo Tot</p>
+                            <p>Prezzo Tot: €  {{ numeroGiorni*room.prezzo }}</p>
                           </ng-container>
                         </ng-container>
                       </mat-grid-tile>
@@ -74,13 +75,48 @@
 
 
               <ng-container *ngSwitchCase="'Servizi'">
-                
-                
-
+                <div class='internalMatGrid boxdatepicker' >
+                <mat-grid-list cols="3" rowHeight="100px">
+                    <ng-container *ngFor="let tile of servizigrid">
+                        <mat-grid-tile [colspan]="tile.cols" [rowspan]="tile.rows" [style.background]="tile.color">
+                            <ng-container [ngSwitch]="tile.component">
+                                <ng-container *ngSwitchCase="'Titolo'">
+                                    <div class="titolo">SERVIZI DISPONIBILI</div>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'Wifi'">
+                                    <mat-icon svgIcon="wifi-red" aria-hidden="false" [attr.aria-label]="getAriaLabel(tile.icon) " class="icon-size-large"></mat-icon>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'Car'">
+                                    <mat-icon svgIcon="car-red" aria-hidden="false" [attr.aria-label]="getAriaLabel(tile.icon)" class="icon-size-large"></mat-icon>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'AC'">
+                                    <mat-icon svgIcon="ac-red" aria-hidden="false" [attr.aria-label]="getAriaLabel(tile.icon)" class="icon-size-large"></mat-icon>
+                                </ng-container>
+                            </ng-container>
+                      
+                        </mat-grid-tile>
+                    </ng-container>
+                    <ng-container *ngFor="let tile of iconsRed">
+                      <mat-grid-tile colspan="1" rowspan="1" [style.background]="'transparent'">
+                        <p>{{getAriaLabel(tile)}}</p>
+                      </mat-grid-tile>
+                    </ng-container>
+                    
+                  
+                </mat-grid-list>
+                </div>
               </ng-container>
   
             </ng-container>
           </mat-grid-tile>
         </ng-container>
       </mat-grid-list>
+      <br>
+      <br>
+      <br>
+      <ng-container *ngIf="room.gestore">
+        <app-user-page [username]="room.gestore"></app-user-page>
+      </ng-container>
+      
+
 </body>

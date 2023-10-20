@@ -5,6 +5,7 @@ import { ValidationService } from '../services/ValidationService';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { PhotoService } from '../services/PhotoService';
+import axios from 'axios';
 
 @Component({
   selector: 'app-create-room',
@@ -15,6 +16,11 @@ export class CreateRoomComponent implements OnInit {
     nome: string = '';
     indirizzo: string = '';
     prezzo: number = 0;
+    descrizione: string = '';
+    carserv: boolean = false;
+    wifiserv: boolean = false;
+    acserv: boolean = false;
+
     image: File | null = null;
   roomCreated:boolean = false;
   roomError: boolean = false;
@@ -28,7 +34,7 @@ export class CreateRoomComponent implements OnInit {
     private photoService: PhotoService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     const usernameFromUrl = this.route.snapshot.paramMap.get('username');
     const usernameFromCookie = this.cookieService.get('username');
     console.log(usernameFromUrl);
@@ -36,11 +42,14 @@ export class CreateRoomComponent implements OnInit {
     if (usernameFromUrl === usernameFromCookie) {
       const accessToken = this.cookieService.get('accessToken');
       if (accessToken) {
-        this.validationService.refresh(accessToken).subscribe((result: boolean)=> {
-            if (!result) {
-            this.router.navigate(['/login']);
-            }
-        });
+        try {
+          await this.validationService.refresh();
+          // Continua con il tuo flusso di lavoro dopo il refresh riuscito.
+        } catch (error) {
+          // Gestisci l'errore, ad esempio, reindirizzando l'utente alla pagina di login.
+          this.router.navigate(['/login']);
+        }
+      
     } else {
         this.router.navigate(['/login']);
         }
@@ -49,52 +58,57 @@ export class CreateRoomComponent implements OnInit {
     }
 }
 
-  createRoom() {
-    this.validationService.refresh(this.cookieService.get('refreshToken')).subscribe((result: boolean)=> {
-      if (!result) {
-      this.router.navigate(['/login']);
-      }
-  });
-    const url = 'http://localhost:8081/room/create';
-    const accessToken = this.cookieService.get('accessToken');
-
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${accessToken}`,
-      'Content-Type': 'application/json'
-    });
-
-    console.log(headers);
-
-
-    console.log(this.cookieService.get('accessToken'))
-
-    console.log(this.prezzo);
-
-
-
-    const roomData = {
-      nome: this.nome,
-      indirizzo: this.indirizzo,
-      prezzo: this.prezzo
-    };
     
-  
-    this.http.post(url, roomData, { headers, observe: 'response'}).subscribe(
-      (response: any) => {
+    async createRoom() {
+      try {
+        await this.validationService.refresh();
+        // Continua con il tuo flusso di lavoro dopo il refresh riuscito.
+      } catch (error) {
+        // Gestisci l'errore, ad esempio, reindirizzando l'utente alla pagina di login.
+        this.router.navigate(['/login']);
+      }
+      const url = 'http://localhost:8081/room/create';
+      const accessToken = this.cookieService.get('accessToken');
+      const headers = {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      };
+    
+      console.log(headers);
+      console.log(this.cookieService.get('accessToken'));
+      console.log(this.prezzo);
+    
+      const roomData = {
+        nome: this.nome,
+        indirizzo: this.indirizzo,
+        prezzo: this.prezzo,
+        descrizione: "Descrizione random ipsum cazzum palem ",
+        carserv: this.carserv,
+        wifiserv: this.wifiserv,
+        acserv: this.acserv
+      };
+    
+      try {
+        const response = await axios.post(url, roomData, {
+          headers,
+          validateStatus: function (status) {
+            return status === 200; // Accetta solo lo stato 200 come successo
+          }
+        });
+    
         console.log(response.status);
-        if (response.status == 200) {
+    
+        if (response.status === 200) {
           this.roomCreated = true;
           this.uploadImage();
         } else {
           this.roomError = true;
         }
-      },
-      error => {
-        console.log("Errore");
+      } catch (error) {
+        console.error("Errore", error);
         this.roomError = true;
       }
-    );
-  }
+    }
 
   handleImageInput(event: Event): void {
     const inputElement = event.target as HTMLInputElement;

@@ -2,7 +2,7 @@ export class Utente {
     username: string;
     nome: string;
     telefono: number;
-    descrizione: string;
+    descrizione: string = '';
   
 
   constructor(username: string, nome: string, telefono: number, descrizione: string) {

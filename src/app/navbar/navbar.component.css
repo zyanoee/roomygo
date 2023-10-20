@@ -16,28 +16,33 @@
     height: auto;
     opacity: 0.9;
   }
-  .addroom-logo,
-  .cart-logo,
-  .user-logo {
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    transition: opacity 0.3s;
-    
+  .background{
+    background-color: aquamarine;
   }
+
   .buttons-container {
     display: flex;
     align-items: center;
   }
-  
-  .user-container {
+
+  .menu-icon-container{
     margin-left: 10px;
+    margin-right: 20px;
   }
   
-  .cart-container {
-    margin-left: 10px;
+  .example-spacer {
+    flex: 1 1 auto;
   }
-  
-  .addroom-container:hover {
-    opacity: 0.7;
+
+  .button{
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .button:hover{
+    color: #2dc2fd;
+  }
+  .button:hover text{
+    color: white;
   }
