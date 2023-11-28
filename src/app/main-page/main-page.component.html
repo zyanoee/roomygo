@@ -1,23 +1,33 @@
 <body>
 <app-navbar></app-navbar>
 <br>
-<div class="main-page">
+<mat-grid-list cols="9" [rowHeight]="ceil*300"px [style.margin-top]="'50px'">
 
-  <div class="grid-container">
-    <ng-container *ngIf="stanze && stanze.length > 0; else noRooms">
-      <div class="grid-item" *ngFor="let stanza of stanze">
-        <div class="image" [style.background-image]="'url(' + imageUrls[stanza.nome] + ')'" [style.background-color]="'blue'"></div>
-        <div class="nome">
-          <div class="nome">{{ stanza.nome }}</div>
+  <mat-grid-tile colspan="1" [rowspan]="ceil" [style.background]="'transparent'" >
+
+  </mat-grid-tile>
+  <mat-grid-tile colspan="7" [rowspan]="ceil" [style.background]="'transparent'" >
+    <div class="internalMatGrid">
+      <app-search-bar (search)="search()" [criteria]="searchCriteria"></app-search-bar>
+      <mat-grid-list cols="5" rowheight="100px" gutterSize="10px">
+        <ng-container *ngFor="let stanza of searchResults.length > 0 ? searchResults : stanze">
+          <div (click)="goToRoom(stanza.id)">
+          <mat-grid-tile class="grid-item" colspan="1" rowspan="1" [style.background-image]="'url(' + imageUrls[stanza.nome] + ')'" [style.background-color]="'blue'" [style.background-size]="'cover'">
+              <div class="nome">
+                <div class="nome">{{ stanza.nome }}</div>
+              </div>
+              <div class="prezzo">
+                <div class="prezzo">{{ "€ "+stanza.prezzo }}</div>
+              </div>
+          </mat-grid-tile>
         </div>
-        <div class="prezzo">
-          <div class="prezzo">{{ stanza.prezzo }}</div>
-        </div>
-      </div>
-    </ng-container>
-    <ng-template #noRooms>
-      <div class="no-rooms-message">Nessuna stanza attualmente disponibile</div>
-    </ng-template>
-  </div>
-</div>
+        </ng-container>
+      </mat-grid-list>
+    </div>
+  </mat-grid-tile >
+  <mat-grid-tile colspan="1" [rowspan]="ceil" [style.background]="'transparent'" >
+    
+  </mat-grid-tile>
+
+</mat-grid-list>
 </body>

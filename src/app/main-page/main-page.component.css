@@ -5,76 +5,15 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-h2 {
-  font-family: 'Open Sans', sans-serif;
-}
-
-.main-page {
-  padding: 20px;
-}
-
-/*BARRA MENU*/
-.menu-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #2dc2fd;
-  color: white;
-}
-.logo {
-  width: 120px;
-  height: auto;
-  opacity: 0.9;
-}
-.addroom-logo,
-.cart-logo,
-.user-logo {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: opacity 0.3s;
-  
-}
-.buttons-container {
-  display: flex;
-  align-items: center;
-}
-
-.user-container {
-  margin-left: 10px;
-}
-
-.cart-container {
-  margin-left: 10px;
-}
-
-.addroom-container:hover {
-  opacity: 0.7;
-}
 
 
-/*GRIGLIA STANZE*/
-
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  margin: 20px auto;
-  max-width: 600px; /* Massima larghezza della griglia */
-}
 
 .grid-item {
   background-color: #f2f2f2;
   border-radius: 1px;
-  padding: 4px;
   text-align: center;
-  position: relative;
-  overflow: hidden;
   aspect-ratio: 1/1;
   transition: transform 0.3s, z-index 0.3s;
-  z-index: 1;
   border: none; /* Rimuove il bordo */
   outline: none; /* Rimuove l'outline */
 }
@@ -134,4 +73,10 @@ h2 {
   font-size: 18px;
   color: #666;
   padding: 20px;
+}
+
+.internalMatGrid{
+  height: 90%;
+  width: 90%;
+
 }

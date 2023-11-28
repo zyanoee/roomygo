@@ -77,14 +77,20 @@ export class ValidationService {
         refreshToken: refreshToken 
       };
       const response = await axios.post('http://localhost:8081/user/refresh', data, {headers});
-      return response.data === true;
+      if(response.status === 200){
+        this.cookieService.set("accessToken", response.data.accessToken, undefined, '/');
+        this.cookieService.set("refreshToken", response.data.refreshToken, undefined, '/');
+        return true;
+      } else {
+        return false;
+      }
     } catch (error) {
       console.error('Errore durante il refresh del token:', error);
       console.log("Azzeramento della sessione");
-      this.cookieService.deleteAll();
-      this.cookieService.set("username", "");
-      this.cookieService.set("accessToken", "");
-      this.cookieService.set("refreshToken", "");
+      this.cookieService.set("accessToken", " ", undefined, '/');
+      this.cookieService.set("refreshToken", " ", undefined, '/');
+      this.cookieService.set("username", " ", undefined, '/');
+
       return false;
     }
   }

@@ -21,7 +21,9 @@ export class RoomService {
           return data.map(item => new Stanza(
             item.id,
             item.nome,
+            item.tipoStanza,
             item.indirizzo,
+            item.regione,
             item.gestore,
             item.prezzo,
             item.descrizione,
@@ -40,7 +42,9 @@ export class RoomService {
       map(data => new Stanza(
         data.id,
         data.nome,
+        data.tipoStanza,
         data.indirizzo,
+        data.regione,
         data.gestore,
         data.prezzo,
         data.descrizione,

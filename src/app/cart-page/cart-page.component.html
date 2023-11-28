@@ -32,7 +32,7 @@
                                     <h1>{{ getRoom(elm).nome }}</h1>
                                     <h3>{{ getRoom(elm).indirizzo}}</h3>
                                     <h3>{{ "Checkin: " + elm.giorno }}</h3>
-                                    <h3>{{ "Notti: "+elm.ngiorni+", Prezzo: "+elm.prezzo}}</h3>
+                                    <h3>{{ "Notti: "+elm.ngiorni+", Prezzo per notte: "+elm.prezzo}}</h3>
                                 </div>
                             </mat-grid-tile>
                             
@@ -40,13 +40,24 @@
                     </div>
                 </mat-grid-tile>
             </mat-grid-list>
+            <mat-grid-list cols="3" rowHeight="150px" class="grid" gutterSize="5px">
+                <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'transparent'">
+
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'transparent'">
+                    
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'transparent'">
+
+                </mat-grid-tile>
+                
+            </mat-grid-list>
         </div>
-        
-          
-           
-    
         </mat-grid-tile>
       </mat-grid-list>
+</div>
+<div>
+
 </div>
 </body>
 

@@ -82,6 +82,12 @@ export interface GridItem {
     gestore!: Utente;
     numeroGiorni!: number;
 
+    //Alert
+    showAlert = false;
+    successAlert = false;
+    warningAlert = false;
+    alertMessage = '';
+
     iconsRed: string[]=[
       'wifi-red',
       'car-red',
@@ -155,8 +161,6 @@ export interface GridItem {
         }
     });
     }
-  
-
 
     loadRoom(id: string): void{
       this.roomService.getRoom(id).subscribe(
@@ -186,28 +190,30 @@ export interface GridItem {
 
     }
 
-    prenota(){
+    async prenota() {
       const startDate = this.range.get('start')?.value;
       const endDate = this.range.get('end')?.value;
-      if(startDate && endDate){
-        this.carrelloService.add(this.id, startDate, this.numeroGiorni).subscribe(
-          (result: number) => {
-            if(result===1) {
-              //TODO OPERAZIONE RIUSCITA MOSTRARE POPUP VERDE "Aggiunto correttamente al Carrello"
-            }
-            if(result === 2){
-              //TODO OPERAZIONE NON RIUSCITA STANZA GIA OCCUPATA NEL RANGE DI DATE 
-            }
-            if(result === 3){
-              //OPERAZIONE NON RIUSCITA STANZA INESISTENTE (improbabile accada dato che il controllo stanza è gia fatto in precedenza ma controllo in più non fa male)
-            } else {
-              //TODO OPERAZIONE NON RIUSCITA (generico)
-            }
-          },
-          (error) => {
-            //TODO OPERAZIONE NON RIUSCITA (generico)
+  
+      if (startDate && endDate) {
+        try {
+          const result = await this.carrelloService.add(this.id, startDate, this.numeroGiorni);
+  
+          console.log("il numero è:" + result);
+  
+          if (result === 1) {
+            this.showNotification("Elemento aggiunto al carrello", true, false);
+          } else if (result === 2) {
+            this.showNotification("Operazione non riuscita: Stanza già occupata nel range delle date", false, false);
+          } else if (result === 3) {
+            this.showNotification("Operazione non riuscita: Stanza inesistente", false, false);
+          } else {
+            this.showNotification("Operazione non riuscita: Errore generico", false, false);
           }
-        )
+        } catch (error) {
+          this.showNotification("Operazione non riuscita: Errore dal server", false, false);
+        }
+      } else {
+        this.showNotification("Seleziona un range di date per il pernottamento", false, true);
       }
     }
 
@@ -225,4 +231,22 @@ export interface GridItem {
             return '';
         }
       }
+
+      //Alert methods
+
+      showNotification(message: string, success: boolean, warning: boolean) {
+        this.alertMessage = message;
+        this.successAlert = success;
+        this.showAlert = true;
+        this.warningAlert = warning;
+    
+        setTimeout(() => {
+          this.hideNotification();
+        }, 2000);
+      }
+    
+      hideNotification() {
+        this.showAlert = false;
+      }
+  
   }

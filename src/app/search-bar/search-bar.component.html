@@ -1,0 +1,53 @@
+<mat-toolbar>
+    
+    <span class="example-spacer">Filtra ricerca</span>
+    <button mat-icon-button [matMenuTriggerFor]="filtri" class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon>search</mat-icon>
+    </button>
+        <mat-menu #filtri="matMenu">
+                <button mat-menu-item [matMenuTriggerFor]="regione">Regione</button>
+                <button mat-menu-item [matMenuTriggerFor]="tipo">Tipo Stanza</button>
+                <button mat-menu-item [matMenuTriggerFor]="servizi">Servizi</button>
+        </mat-menu>
+
+    <mat-menu #regione="matMenu">
+    <button mat-menu-item [class.selected]="selectedRegion === 'abruzzo'" (click)="setRegion('Abruzzo')">Abruzzo</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'basilicata'" (click)="setRegion('Basilicata')">Basilicata</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'calabria'" (click)="setRegion('Calabria')">Calabria</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'campania'" (click)="setRegion('Campania')">Campania</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'emilia romagna'" (click)="setRegion('Emilia Romagna')">Emilia Romagna</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'friuli venezia giulia'" (click)="setRegion('Friuli Venezia Giulia')">Friuli Venezia Giulia</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'lazio'" (click)="setRegion('Lazio')">Lazio</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'liguria'" (click)="setRegion('Liguria')">Liguria</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'lombardia'" (click)="setRegion('Lombardia')">Lombardia</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'marche'" (click)="setRegion('Marche')">Marche</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'molise'" (click)="setRegion('Molise')">Molise</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'piemonte'" (click)="setRegion('Piemonte')">Piemonte</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'puglia'" (click)="setRegion('Puglia')">Puglia</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'sardegna'" (click)="setRegion('Sardegna')">Sardegna</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'sicilia'" (click)="setRegion('Sicilia')">Sicilia</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'toscana'" (click)="setRegion('Toscana')">Toscana</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'trentino alto adige'" (click)="setRegion('Trentino Alto Adige')">Trentino Alto Adige</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'umbria'" (click)="setRegion('Umbria')">Umbria</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'val d\'aosta'" (click)="setRegion('Val d\'Aosta')">Val d'Aosta</button>
+    <button mat-menu-item [class.selected]="selectedRegion === 'veneto'" (click)="setRegion('Veneto')">Veneto</button>
+  </mat-menu>
+
+<mat-menu #tipo="matMenu">
+  <button mat-menu-item [class.selected]="selectedType === 'stanza'" (click)="setType('Stanza')">Stanza</button>
+  <button mat-menu-item [class.selected]="selectedType === 'appartamento'" (click)="setType('Appartamento')">Appartamento</button>
+  <button mat-menu-item [class.selected]="selectedType === 'albergo'" (click)="setType('Albergo')">Albergo</button>
+</mat-menu>
+
+<mat-menu #servizi="matMenu">
+    <div>
+      <section class="example-section" [formGroup]="services">
+        <p><mat-checkbox formControlName="parcheggio">Parcheggio</mat-checkbox></p>
+        <p><mat-checkbox formControlName="ariacondizionata">Aria Condizionata</mat-checkbox></p>
+        <p><mat-checkbox formControlName="wifi">Wifi</mat-checkbox></p>
+      </section>
+    </div>
+  </mat-menu>
+    <button mat-flat-button color="primary" (click)="onSearchClick()">Cerca</button>
+
+  </mat-toolbar>

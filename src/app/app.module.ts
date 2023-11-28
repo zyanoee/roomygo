@@ -17,19 +17,23 @@ import { UserPageComponent } from './user-page/user-page.component';
 import { RoomPageComponent } from './room-page/room-page2.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card'; 
 import { MatIconModule } from '@angular/material/icon';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { CarouselModule } from '@coreui/angular';
 import { NotFoundPageComponent } from './errorpages/notfoundpage/notfoundpage.component';
 import { differenceInDays } from 'date-fns';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import { CartPageComponent } from './cart-page/cart-page.component';
+import { SearchBarComponent } from './search-bar/search-bar.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +46,9 @@ import { CartPageComponent } from './cart-page/cart-page.component';
     NavbarComponent,
     RoomPageComponent,
     NotFoundPageComponent,
-    CartPageComponent
+    CartPageComponent,
+    SearchBarComponent,
+    
   ],
 
   imports: [
@@ -51,6 +57,7 @@ import { CartPageComponent } from './cart-page/cart-page.component';
     ReactiveFormsModule,
     FormsModule,
     MatSelectModule,
+    MatCheckboxModule,
     MatDatepickerModule, 
     MatFormFieldModule,
     MatNativeDateModule,
@@ -58,9 +65,11 @@ import { CartPageComponent } from './cart-page/cart-page.component';
     MatGridListModule,
     MatIconModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatCardModule,
     MatToolbarModule,
     MatMenuModule,
+    MatSlideToggleModule,
     AppRoutingModule,
     BrowserModule,
     HttpClientModule,

@@ -117,6 +117,11 @@
       <ng-container *ngIf="room.gestore">
         <app-user-page [username]="room.gestore"></app-user-page>
       </ng-container>
+      <div class="alert-overlay" *ngIf="showAlert">
+        <div class="alert-box" [ngClass]="{'success': successAlert&&!warningAlert, 'error': !successAlert&&!warningAlert, 'warning': !successAlert&&warningAlert}">
+          {{ alertMessage }}
+        </div>
+      </div>
       
 
 </body>

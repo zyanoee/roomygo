@@ -10,6 +10,7 @@ export class RegisterPageComponent {
   username: string = '';
   password: string = '';
   nome: string = '';
+  telefono!: number;
   registrationSuccess: boolean = false;
   registrationError: boolean = false;
   inputError: boolean = false;
@@ -38,13 +39,15 @@ export class RegisterPageComponent {
   constructor(private http: HttpClient) {}
 
   register(): void {
-    if (this.username && this.password && this.nome) {
+    if (this.username && this.password && this.nome && this.telefono) {
       const url = 'http://localhost:8081/user/signup';
 
 const requestBody = new URLSearchParams();
 requestBody.set('username', this.username);
 requestBody.set('nome', this.nome);
 requestBody.set('password', this.password);
+requestBody.set('telefono', this.telefono.toString());
+
 
 const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
 

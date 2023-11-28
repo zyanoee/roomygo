@@ -10,24 +10,73 @@
               <input type="text" id="nome" name="nome" [(ngModel)]="nome" required>
             </div>
             <div>
+              <mat-form-field>
+                <mat-label>Seleziona un tipo di Stanza</mat-label>
+                <mat-select [(value)]="tipo">
+                  <mat-option value="stanza">Stanza</mat-option>
+                  <mat-option value="albergo">Albergo</mat-option>
+                  <mat-option value="appartamento">Appartamento</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div>
               <label for="indirizzo">Indirizzo</label>
               <input type="text" id="indirizzo" name="indirizzo" [(ngModel)]="indirizzo" required>
+            </div>
+            <div>
+              <mat-form-field>
+                <mat-label>Seleziona la località</mat-label>
+                <mat-select [(value)]="regione">
+                  <mat-option value="abruzzo">Abruzzo</mat-option>
+                  <mat-option value="basilicata">Basilicata</mat-option>
+                  <mat-option value="calabria">Calabria</mat-option>
+                  <mat-option value="campania">Campania</mat-option>
+                  <mat-option value="emilia romagna">Emilia Romagna</mat-option>
+                  <mat-option value="friuli venezia giulia">Friuli Venezia Giulia</mat-option>
+                  <mat-option value="lazio">Lazio</mat-option>
+                  <mat-option value="liguria">Liguria</mat-option>
+                  <mat-option value="lombardia">Lombardia</mat-option>
+                  <mat-option value="marche">Marche</mat-option>
+                  <mat-option value="molise">Molise</mat-option>
+                  <mat-option value="piemonte">Piemonte</mat-option>
+                  <mat-option value="puglia">Puglia</mat-option>
+                  <mat-option value="sardegna">Sardegna</mat-option>
+                  <mat-option value="sicilia">Sicilia</mat-option>
+                  <mat-option value="toscana">Toscana</mat-option>
+                  <mat-option value="trentino alto adige">Trentino Alto Adige</mat-option>
+                  <mat-option value="umbria">Umbria</mat-option>
+                  <mat-option value="val d'aosta">Val d'Aosta</mat-option>
+                  <mat-option value="veneto">Veneto</mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
             <div>
               <label for="prezzo">Prezzo</label>
               <input type="text" id="prezzo" name="prezzo" [(ngModel)]="prezzo" required>
             </div>
+            <br>
+            <label>Servizi</label>
+            <br>
+            <div><mat-slide-toggle [(ngModel)]="carserv" name="carserv">Parcheggio</mat-slide-toggle></div>
+            <br>
+            <div><mat-slide-toggle [(ngModel)]="wifiserv" name="wifiserv">Wi-Fi</mat-slide-toggle></div>
+            <br>
+            <div><mat-slide-toggle [(ngModel)]="acserv" name="acserv">Aria Condizionata</mat-slide-toggle></div>
+            <br>
             <div>
               <label for="image">Immagine</label>
               <input type="file" id="image" name="image" (change)="handleImageInput($event)">
             </div>
+            <br>
             <button type="button" (click)="createRoom()">Crea Stanza</button>
         </div>
         </form>
       
 
-      <div class="success-message" *ngIf="roomCreated">
-        Stanza creata con successo
-      </div>
+        <div class="alert-overlay" *ngIf="showAlert">
+          <div class="alert-box" [ngClass]="{'success': successAlert&&!duj7, 'error': !successAlert&&!duj7, 'warning': !successAlert&&duj7}">
+            {{ alertMessage }}
+          </div>
+        </div>
   </div>
   

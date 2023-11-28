@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { PhotoService } from '../services/PhotoService';
 import axios from 'axios';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-create-room',
@@ -14,16 +15,22 @@ import axios from 'axios';
 })
 export class CreateRoomComponent implements OnInit {
     nome: string = '';
+    tipo!: string;
     indirizzo: string = '';
+    regione!: string;
     prezzo: number = 0;
     descrizione: string = '';
     carserv: boolean = false;
     wifiserv: boolean = false;
     acserv: boolean = false;
 
+    //Alert
+    showAlert = false;
+    successAlert = false;
+    duj7 = false;
+    alertMessage = '';
+
     image: File | null = null;
-  roomCreated:boolean = false;
-  roomError: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -31,7 +38,8 @@ export class CreateRoomComponent implements OnInit {
     private validationService: ValidationService,
     private router: Router,
     private route: ActivatedRoute,
-    private photoService: PhotoService
+    private photoService: PhotoService,
+    private formBuilder: FormBuilder
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -44,9 +52,8 @@ export class CreateRoomComponent implements OnInit {
       if (accessToken) {
         try {
           await this.validationService.refresh();
-          // Continua con il tuo flusso di lavoro dopo il refresh riuscito.
+
         } catch (error) {
-          // Gestisci l'errore, ad esempio, reindirizzando l'utente alla pagina di login.
           this.router.navigate(['/login']);
         }
       
@@ -80,7 +87,9 @@ export class CreateRoomComponent implements OnInit {
     
       const roomData = {
         nome: this.nome,
+        tipoStanza: this.tipo,
         indirizzo: this.indirizzo,
+        regione: this.regione,
         prezzo: this.prezzo,
         descrizione: "Descrizione random ipsum cazzum palem ",
         carserv: this.carserv,
@@ -92,21 +101,21 @@ export class CreateRoomComponent implements OnInit {
         const response = await axios.post(url, roomData, {
           headers,
           validateStatus: function (status) {
-            return status === 200; // Accetta solo lo stato 200 come successo
+            return status === 200; 
           }
         });
     
         console.log(response.status);
     
         if (response.status === 200) {
-          this.roomCreated = true;
+          this.showNotification("Stanza creata con successo!", true, false);
           this.uploadImage();
         } else {
-          this.roomError = true;
+          this.showNotification("Errore durante la creazione della stanza", false, false);
         }
       } catch (error) {
         console.error("Errore", error);
-        this.roomError = true;
+        this.showNotification("Errore durante la creazione della stanza", false, false);
       }
     }
 
@@ -124,11 +133,9 @@ export class CreateRoomComponent implements OnInit {
       this.photoService.uploadPhoto(this.image, this.nome).subscribe(
         () => {
           console.log('Immagine caricata con successo');
-          // Esegui qui eventuali azioni dopo il caricamento dell'immagine
         },
         error => {
           console.error('Errore durante il caricamento dell\'immagine:', error);
-          // Gestisci l'errore qui
         }
       );
     }
@@ -137,4 +144,21 @@ export class CreateRoomComponent implements OnInit {
   goToHomePage(): void {
     this.router.navigate(['/']);
   }
+
+  //Alert methods
+  showNotification(message: string, success: boolean, warning: boolean) {
+    this.alertMessage = message;
+    this.successAlert = success;
+    this.showAlert = true;
+    this.duj7 = warning;
+
+    setTimeout(() => {
+      this.hideNotification();
+    }, 2000);
+  }
+
+    hideNotification() {
+      this.showAlert = false;
+    }
+
 }

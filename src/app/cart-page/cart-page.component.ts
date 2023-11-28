@@ -4,6 +4,7 @@ import { CarrelloService } from '../services/CarrelloService';
 import { PhotoService } from '../services/PhotoService';
 import { Stanza } from '../entity/Stanza';
 import { RoomService } from '../services/RoomService';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cart-page',
@@ -17,29 +18,52 @@ export class CartPageComponent {
   elementi: ElementoCarrello[] = [ ];
   fotoStanze = new Map<string, string>;
   stanze = new Map<string, Stanza>
+  subscriptions: Subscription[] = [];
 
   ngOnInit() {
-    this.carrelloService.get().subscribe((data) => {
+    const carrelloSubscription = this.carrelloService.get().subscribe((data) => {
       this.elementi = data;
-      for(const elm of this.elementi){
+      for (const elm of this.elementi) {
         const stanza_id = elm.stanza_id;
         const gestore_id = elm.gestore_id;
-        this.stanzaService.getRoom(stanza_id).subscribe((stanza: Stanza)=>{
-          this.stanze.set(stanza_id,stanza);
-        })
-        this.photoService.getImageUrlObservable(stanza_id, gestore_id).subscribe((url: string)=>{
-          this.fotoStanze.set(stanza_id,url);
-        })
+
+        const stanzaSubscription = this.stanzaService
+          .getRoom(stanza_id)
+          .subscribe((stanza: Stanza) => {
+            this.stanze.set(stanza_id, stanza);
+          });
+        this.subscriptions.push(stanzaSubscription);
+
+        const fotoSubscription = this.photoService
+          .getImageUrlObservable(stanza_id, gestore_id)
+          .subscribe((url: string) => {
+            this.fotoStanze.set(stanza_id, url);
+          });
+        this.subscriptions.push(fotoSubscription);
       }
-    })
+    });
+    this.subscriptions.push(carrelloSubscription);
   }
-  rimuovi(elm_id: string): void{
-    this.carrelloService.remove(elm_id).subscribe((value)=>{
-      if(value===1){
-        this.elementi = this.elementi.filter(item=> item.id === elm_id);
+
+  ngOnDestroy() {
+    for (const subscription of this.subscriptions) {
+      subscription.unsubscribe();
+    }
+  }
+  async rimuovi(elm_id: string): Promise<void>{
+    try {
+      const result = await this.carrelloService.remove(elm_id);
+
+      if(result===1){
+        this.elementi = this.elementi.filter(item=> item.id !== elm_id);
       }
-    })
+    } catch (error) {
+      console.log(error);
+    }
+    
   }
+
+  
 
   getUrl(elm: ElementoCarrello): string{
     const url = this.fotoStanze.get(elm.stanza_id);
@@ -55,7 +79,7 @@ export class CartPageComponent {
     if(room){
       return room;
     } else {
-      return new Stanza(-1, "", "", "", 0, "", false, false, false);
+      return new Stanza(-1, "", "", "", "", "", 0, "", false, false, false);
     }
   }
 

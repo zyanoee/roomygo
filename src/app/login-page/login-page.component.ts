@@ -56,8 +56,7 @@ export class LoginPageComponent {
     this.http.post(url, requestBody.toString(), { headers, observe: 'response'} ).pipe(
       catchError((error) => {
         if (error.status === 0) {
-          // Qui puoi gestire l'errore di connessione rifiutata
-          // Ad esempio, mostrare una notifica all'utente
+
           console.error('Errore di connessione rifiutata:', error);
           this.showNotification('Errore di connessione. Verifica la connessione di rete.', false, false);
         }
@@ -73,9 +72,9 @@ export class LoginPageComponent {
             // Gestione per stato 200
             const accessToken = response.body.accessToken;
             const refreshToken = response.body.refreshToken;
-            this.cookieService.set('accessToken', accessToken);
-            this.cookieService.set('username', this.username);
-            this.cookieService.set('refreshToken', refreshToken);
+            this.cookieService.set('accessToken', accessToken,undefined,'/');
+            this.cookieService.set('username', this.username,undefined,'/');
+            this.cookieService.set('refreshToken', refreshToken,undefined,'/');
             console.log(accessToken);
             this.showNotification('Login avvenuto con successo!', true, false);
           } else {
