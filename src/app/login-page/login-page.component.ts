@@ -24,7 +24,9 @@ export class LoginPageComponent {
   alertMessage = '';
 
   ngOnInit(){
-    this.validationService.refresh();
+    if(this.cookieService.get("accessToken") != "null"){
+      this.router.navigate(["/"])
+    }
   }
 
   showNotification(message: string, success: boolean, warning: boolean) {

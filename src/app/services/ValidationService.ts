@@ -5,6 +5,7 @@ import { Observable, of} from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { isValid } from 'date-fns';
 import axios from 'axios';
+import { NotAuthError } from '../errors/NotAuthError';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +26,7 @@ export class ValidationService {
 
     if (!accessToken || !refreshToken) {
       console.log('AccessToken o RefreshToken mancante. Impossibile eseguire il refresh.');
-      return;
-    }
+      throw new NotAuthError("Non autenticato");   }
 
     // Chiamata al metodo validate(token)
     const isTokenValid = await this.validateToken(accessToken);
@@ -52,6 +52,7 @@ export class ValidationService {
       
       const headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
+        
       };
       
       const data = {
@@ -87,9 +88,61 @@ export class ValidationService {
     } catch (error) {
       console.error('Errore durante il refresh del token:', error);
       console.log("Azzeramento della sessione");
-      this.cookieService.set("accessToken", " ", undefined, '/');
-      this.cookieService.set("refreshToken", " ", undefined, '/');
-      this.cookieService.set("username", " ", undefined, '/');
+      this.cookieService.set("accessToken", "null", undefined, '/');
+      this.cookieService.set("refreshToken", "null", undefined, '/');
+      this.cookieService.set("username", "null", undefined, '/');
+
+      return false;
+    }
+  }
+
+  async check(username: string): Promise<Boolean> {
+    try{
+      const accessToken = this.cookieService.get("accessToken");
+      const headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Bearer ${accessToken}`
+      };
+      const data = {
+        username: username
+      };
+      const response = await axios.post('http://localhost:8081/user/check', data, {headers});
+      if(response.status === 200){
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async logout(): Promise<boolean> {
+    try{
+      const accessToken = this.cookieService.get("accessToken");
+      const headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Bearer ${accessToken}`
+      };
+
+      const refreshToken = this.cookieService.get("refreshToken");
+      const data = {
+        refreshToken: refreshToken
+      };
+      const response = await axios.post('http://localhost:8081/user/logout', data, {headers});
+      if(response.status === 200){
+        this.cookieService.set("accessToken", response.data.accessToken, undefined, '/');
+        this.cookieService.set("refreshToken", response.data.refreshToken, undefined, '/');
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error('Errore durante il refresh del token:', error);
+      console.log("Azzeramento della sessione");
+      this.cookieService.set("accessToken", "null", undefined, '/');
+      this.cookieService.set("refreshToken", "null", undefined, '/');
+      this.cookieService.set("username", "null", undefined, '/');
 
       return false;
     }

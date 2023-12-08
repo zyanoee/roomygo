@@ -24,15 +24,20 @@ import { Utente } from '../entity/Utente';
     user!: Utente;
     userLinks: string[] = [];
 
-  constructor(private roomService: RoomService, private userService: UserService) {
+    userPhotoUrl: string='';
+
+  constructor(private photoService: PhotoService, private roomService: RoomService, private userService: UserService) {
     
    }
 
     ngOnInit(): void {
-      this.userService.getUser(this.username).subscribe(data => {this.user = data;});
-          
-        
-    }
+      this.userService.getUser(this.username).subscribe(
+        (user: Utente) => {
+          this.user = user;
+          this.photoService.showImagePropic(this.username).subscribe((data: string)=>this.userPhotoUrl=data);
+        }
+      );
+    }     
 
     viewReservations() {
         //TODO

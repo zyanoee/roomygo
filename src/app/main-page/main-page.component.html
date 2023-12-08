@@ -1,18 +1,20 @@
 <body>
 <app-navbar></app-navbar>
 <br>
-<mat-grid-list cols="9" [rowHeight]="ceil*300"px [style.margin-top]="'50px'">
+
+<mat-grid-list cols="9" [rowHeight]="ceil*400"px [style.margin-top]="'50px'">
 
   <mat-grid-tile colspan="1" [rowspan]="ceil" [style.background]="'transparent'" >
 
   </mat-grid-tile>
   <mat-grid-tile colspan="7" [rowspan]="ceil" [style.background]="'transparent'" >
+    
     <div class="internalMatGrid">
-      <app-search-bar (search)="search()" [criteria]="searchCriteria"></app-search-bar>
-      <mat-grid-list cols="5" rowheight="100px" gutterSize="10px">
-        <ng-container *ngFor="let stanza of searchResults.length > 0 ? searchResults : stanze">
+      <app-search-bar class="searchbar" (reset)="reset()" (search)="search()" [criteria]="searchCriteria"></app-search-bar>
+      <mat-grid-list cols="5" rowheight="200px" gutterSize="10px">
+        <ng-container *ngFor="let stanza of searchResults">
           <div (click)="goToRoom(stanza.id)">
-          <mat-grid-tile class="grid-item" colspan="1" rowspan="1" [style.background-image]="'url(' + imageUrls[stanza.nome] + ')'" [style.background-color]="'blue'" [style.background-size]="'cover'">
+          <mat-grid-tile class="grid-item" colspan="1" rowspan="1" [style.background-image]="'url(' + imageUrls.get(stanza.id.toString()) + ')'" [style.background-color]="'blue'" [style.background-size]="'cover'">
               <div class="nome">
                 <div class="nome">{{ stanza.nome }}</div>
               </div>

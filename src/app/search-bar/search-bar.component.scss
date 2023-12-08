@@ -1,8 +1,35 @@
-.selected {
-    background-color: blue;
-    color: white;
-  }
 
-.example-spacer {
-    margin-left: 33%;
+.filter {
+  margin: 0 auto;
+  width: 100%;
+
+
 }
+
+.searchBar {
+  width: 900px;
+}
+
+
+
+@media only screen and (max-width: 430px) {
+
+  .icon-min{
+    margin-left: 22%;
+  }
+.example-spacer{
+  display: none;
+
+}
+
+}
+
+@media only screen and (max-width: 300px ){
+
+    .icon-min{
+    margin-left: 6%;
+  }
+    .example-spacer{
+  display: none;
+    }
+  }

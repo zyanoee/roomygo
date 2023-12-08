@@ -1,9 +1,18 @@
-<mat-toolbar>
+
     
-    <span class="example-spacer">Filtra ricerca</span>
-    <button mat-icon-button [matMenuTriggerFor]="filtri" class="example-icon" aria-label="Example icon-button with menu icon">
-        <mat-icon>search</mat-icon>
-    </button>
+   <div class="searchbar"> 
+    <div class="filter">
+      <span class="example-spacer" style="margin-left: 22%">Filtra ricerca</span>
+      <button mat-icon-button [matMenuTriggerFor]="filtri" class="icon-min" aria-label="Example icon-button with menu icon">
+        <mat-icon >search</mat-icon>
+      </button>
+      <button mat-flat-button color="primary" (click)="onSearchClick()">Cerca</button>
+      <button mat-mini-fab color="primary" style="margin-left: 5px;" (click)="onResetClick()">
+      <mat-icon>restore</mat-icon>
+      </button>
+    </div>
+    
+    
         <mat-menu #filtri="matMenu">
                 <button mat-menu-item [matMenuTriggerFor]="regione">Regione</button>
                 <button mat-menu-item [matMenuTriggerFor]="tipo">Tipo Stanza</button>
@@ -42,12 +51,10 @@
 <mat-menu #servizi="matMenu">
     <div>
       <section class="example-section" [formGroup]="services">
-        <p><mat-checkbox formControlName="parcheggio">Parcheggio</mat-checkbox></p>
-        <p><mat-checkbox formControlName="ariacondizionata">Aria Condizionata</mat-checkbox></p>
-        <p><mat-checkbox formControlName="wifi">Wifi</mat-checkbox></p>
+        <p><mat-checkbox formControlName="parcheggio" (click)="$event.stopPropagation()">Parcheggio</mat-checkbox></p>
+        <p><mat-checkbox formControlName="ariacondizionata" (click)="$event.stopPropagation()">Aria Condizionata</mat-checkbox></p>
+        <p><mat-checkbox formControlName="wifi" (click)="$event.stopPropagation()">Wifi</mat-checkbox></p>
       </section>
     </div>
   </mat-menu>
-    <button mat-flat-button color="primary" (click)="onSearchClick()">Cerca</button>
-
-  </mat-toolbar>
+</div>

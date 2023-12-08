@@ -18,7 +18,7 @@ import { Observable, distinctUntilChanged, map, of } from 'rxjs';
 export class MainPageComponent {
 
   stanze: Stanza[] = [];
-  imageUrls: { [key: string]: string } = {};
+  imageUrls: Map<string, string> = new Map;
 
   searchCriteria: SearchCriteria = new SearchCriteria();
   searchResults: any[] = [];
@@ -52,37 +52,36 @@ export class MainPageComponent {
     this.http.get<Stanza[]>('http://localhost:8081/room')
       .subscribe((data) => {
         this.stanze = data.map((item: any) => {
-          return new Stanza(item.id, item.nome, item.tipoStanza, item.indirizzo, item.indirizzo, item.gestore, item.prezzo, item.descrizione, item.carserv, item.wifiserv, item.acserv);
+          return new Stanza(item.id, item.nome, item.tipoStanza, item.indirizzo, item.regione, item.gestore, item.prezzo, item.descrizione, item.carserv, item.wifiserv, item.acserv);
         });
+        this.searchResults = this.stanze.slice();
         this.ceil = Math.ceil(this.stanze.length / 5);
         this.stanze.forEach((stanza) => {
-          this.getImageUrlObservable(stanza.nome, stanza.gestore).subscribe(url => {
-            this.imageUrls[stanza.nome] = url;
-          });
+          this.photoService.showImage(stanza.id, stanza.gestore, 0).subscribe((data: string)=>this.imageUrls.set(stanza.id.toString(),data))
         });
       });
   }
   
-  getImageUrlObservable(nomeStanza: string, gestore: string): Observable<string> {
-    return this.photoService.downloadPhoto(nomeStanza, gestore).pipe(
-      map((blob: Blob) => URL.createObjectURL(blob))
-    );
-  }
 
   goToRoom(stanza_id: number): void {
     this.router.navigate(["/room/"+stanza_id]);
   }
 
   searchRooms(criteria: SearchCriteria): any[] {
-    // Implementa la logica di ricerca qui
-    // Filtra this.rooms in base ai criteri e restituisci il risultato
     return this.stanze.filter(room => {
+      console.log(room.regione);
+      console.log(room.indirizzo);
+      console.log((criteria.regione === undefined || room.regione === criteria.regione));
+      console.log((criteria.tipoStanza === undefined || room.tipoStanza === criteria.tipoStanza));
+      console.log( (room.carserv === criteria.parcheggio));
+      console.log((room.acserv === criteria.ariacondizionata))
+      console.log(( (room.wifiserv === criteria.wifi)))
       return (
-        (!criteria.regione || room.regione === criteria.regione) &&
-        (!criteria.tipoStanza || room.tipoStanza === criteria.tipoStanza) &&
+        (criteria.regione === undefined || room.regione === criteria.regione) &&
+        (criteria.tipoStanza === undefined || room.tipoStanza === criteria.tipoStanza) &&
         (!criteria.parcheggio || room.carserv === criteria.parcheggio) &&
-        (!criteria.ariacondizionata || room.acserv === criteria.ariacondizionata) &&
-        (!criteria.wifi || room.wifiserv === criteria.wifi)
+        (!criteria.ariacondizionata ||room.acserv === criteria.ariacondizionata) &&
+        (!criteria.wifi ||room.wifiserv === criteria.wifi)
 
       );
     });
@@ -90,6 +89,10 @@ export class MainPageComponent {
 
   search() {
     this.searchResults = this.searchRooms(this.searchCriteria);
+  }
+
+  reset() {
+    this.searchResults = this.stanze.slice();
   }
 
 }

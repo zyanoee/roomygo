@@ -12,6 +12,19 @@
     </mat-grid-list>
     </div>
     <br>
+    <mat-grid-list *ngIf="usernameAuth===room.gestore" cols="9" rowHeight="100px" gutterSize="10">
+      <mat-grid-tile colspan="3" rowspan="1" [style.background]="'transparent'"></mat-grid-tile>
+      <mat-grid-tile colspan="1" rowspan="1" [style.background]="'transparent'">
+        <button mat-raised-button color="primary" (click)="edit()">EDIT</button>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1" rowspan="1" [style.background]="'transparent'">
+      
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1" rowspan="1" [style.background]="'transparent'">
+        <button mat-raised-button color="primary" (click)="prenotazioni()">EDIT</button>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="3" rowspan="1" [style.background]="'transparent'"></mat-grid-tile>
+    </mat-grid-list>
     <br>
 
     <mat-grid-list cols="2" rowHeight="300px" class=" griglia">
@@ -84,21 +97,21 @@
                                     <div class="titolo">SERVIZI DISPONIBILI</div>
                                 </ng-container>
                                 <ng-container *ngSwitchCase="'Wifi'">
-                                    <mat-icon svgIcon="wifi-red" aria-hidden="false" [attr.aria-label]="getAriaLabel(tile.icon) " class="icon-size-large"></mat-icon>
+                                    <mat-icon [svgIcon]="icons[0]" aria-hidden="false" [attr.aria-label]="getAriaLabel(icons[0]) " class="icon-size-large"></mat-icon>
                                 </ng-container>
                                 <ng-container *ngSwitchCase="'Car'">
-                                    <mat-icon svgIcon="car-red" aria-hidden="false" [attr.aria-label]="getAriaLabel(tile.icon)" class="icon-size-large"></mat-icon>
+                                    <mat-icon [svgIcon]="icons[1]" aria-hidden="false" [attr.aria-label]="getAriaLabel(icons[1])" class="icon-size-large"></mat-icon>
                                 </ng-container>
                                 <ng-container *ngSwitchCase="'AC'">
-                                    <mat-icon svgIcon="ac-red" aria-hidden="false" [attr.aria-label]="getAriaLabel(tile.icon)" class="icon-size-large"></mat-icon>
+                                    <mat-icon [svgIcon]="icons[2]" aria-hidden="false" [attr.aria-label]="getAriaLabel(icons[2])" class="icon-size-large"></mat-icon>
                                 </ng-container>
                             </ng-container>
                       
                         </mat-grid-tile>
                     </ng-container>
-                    <ng-container *ngFor="let tile of iconsRed">
+                    <ng-container *ngFor="let icon of icons">
                       <mat-grid-tile colspan="1" rowspan="1" [style.background]="'transparent'">
-                        <p>{{getAriaLabel(tile)}}</p>
+                        <p>{{getAriaLabel(icon)}}</p>
                       </mat-grid-tile>
                     </ng-container>
                     

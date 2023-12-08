@@ -130,7 +130,7 @@ export class CreateRoomComponent implements OnInit {
   uploadImage(): void {
     if (this.image) {
       console.log("lo fa (upload)")
-      this.photoService.uploadPhoto(this.image, this.nome).subscribe(
+      this.photoService.uploadPhoto(this.image, this.nome, this.indirizzo).subscribe(
         () => {
           console.log('Immagine caricata con successo');
         },

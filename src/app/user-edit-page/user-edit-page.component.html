@@ -1,0 +1,47 @@
+<app-navbar></app-navbar>
+<div class="profile-card">
+    <div class="profile-back"></div>
+    <img class="rounded-circle profile-pic" [src]='userPhotoUrl' />
+    <h3 class="profile-name">{{ '@'+username }}</h3>
+  
+    <!-- Layout a tre colonne -->
+    <div class="profile-layout">
+      <!-- Colonna sinistra per la descrizione -->
+      <div class="profile-column description-left">
+        <h4>Su di me:</h4>
+        <p class="profile-bio">
+          {{ this.userDescription }}
+        </p>
+      </div>
+      
+      <!-- Colonna centrale per le informazioni di base -->
+      <div class="profile-column">
+        <h4>Informazioni di base</h4>
+        <p><strong>Nome:</strong> {{ this.userNome }}</p>
+        <p><strong>Username:</strong> {{ this.username }}</p>
+        <p><strong>Telefono:</strong> {{ this.userTelefono }}</p>
+      </div>
+      
+      <!-- Colonna destra per i link utente -->
+      <div class="profile-column description-right">
+        <h4>Link utente</h4>
+        <ul class="user-links">
+          <li *ngFor="let link of userLinks">{{ link }}</li>
+        </ul>
+      </div>
+    </div>
+    <br>
+    <div class="internalMatGrid" style="margin:15px;border-radius: 15px;">
+    <mat-grid-list cols="3" rowHeight="100px" [style.background]="'lightblue'">
+      <mat-grid-tile colspan="1" rowspan="1" [style.background]="'lightblue'">
+        <button mat-raised-button color="primary" (click)="stanze()">Stanze</button>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1" rowspan="1" [style.background]="'lightblue'">
+          <button mat-raised-button color="primary" (click)="edita()">Edita</button>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1" rowspan="1" [style.background]="'lightblue'">
+        <button mat-raised-button color="primary" (click)="prenotazioni()">Prenotazioni</button>
+      </mat-grid-tile>
+  
+  </mat-grid-list>
+  </div>

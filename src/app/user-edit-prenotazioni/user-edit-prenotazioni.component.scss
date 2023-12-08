@@ -1,0 +1,107 @@
+
+.internalMatGrid{
+    height: 100%;
+    width: 100%;
+    background-color: #2dc2fd;
+}
+
+.heightwidth{
+    height: 100%;
+    width: 100%;
+
+}
+
+.icon-container{
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border-radius: 12px;
+}
+
+.icon{
+    margin-left: 17px;
+    margin-top: 17px;
+    transform: scale(1.8);
+    cursor: pointer;
+}
+
+.test{
+    background-color: #2dc2fd;
+}
+
+.iinternalMatGrid{
+    height: 90%;
+    width: 90%;
+    background-color: white;
+    border-radius: 12px;
+}
+
+.iinternalMatGrid h1,h3{
+    margin: 10px;
+
+
+}
+
+
+.square {
+    border-radius: 12px;
+    max-height: 250px;
+    min-height: 250px;
+    max-width: 250px;
+    min-width: 250px;
+    height: 100%;
+    width: 100%;
+}
+
+.immagine {
+    border-radius: 12px;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.elementoCarrello {
+    height: 300px;
+    width: 100%;
+}
+
+.internalMatGrid h2,
+.internalMatGrid h3 {
+  font-size: 1vw; 
+  line-height: 1.2;
+}
+
+/* ALERTS */
+.alert-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    animation: fade-in 0.5s;
+  }
+  
+  .alert-box {
+    padding: 10px 20px;
+    color: white;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: opacity 0.5s;
+  }
+  
+  .success {
+    background-color: rgba(110, 191, 99,1);
+  }
+  
+  .error {
+    background-color: rgba(181, 69, 69,1);
+  }
+  
+  .warning {
+    background-color: rgba(217, 190, 117,1);
+  }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-register-page',
@@ -36,9 +37,14 @@ export class RegisterPageComponent {
     this.showAlert = false;
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cookieService: CookieService) {
+
+  }
 
   register(): void {
+    this.cookieService.set("username","null",undefined, '/');
+    this.cookieService.set("accessToken", "null", undefined, '/');
+    this.cookieService.set("refreshToken", "null", undefined, '/');
     if (this.username && this.password && this.nome && this.telefono) {
       const url = 'http://localhost:8081/user/signup';
 
@@ -57,6 +63,7 @@ this.http.post(url, requestBody.toString(), { headers, observe: 'response'} ).su
     if (response.status == 201) {
       // Gestione per stato 200
       this.showNotification('Registrazione avvenuta con successo!', true, false);
+
       this.inputError = false;
     } else {
       this.showNotification('Errore durante la registrazione', false, false);

@@ -1,15 +1,15 @@
 <div class="profile-card">
     <div class="profile-back"></div>
-    <img class="rounded-circle profile-pic" src="assets/logos/defaultuser.png" />
-    <h3 class="profile-name">{{ username }}</h3>
+    <img class="rounded-circle profile-pic" [src]="userPhotoUrl" />
+    <h3 class="profile-name">{{ '@'+username }}</h3>
   
     <!-- Layout a tre colonne -->
     <div class="profile-layout">
       <!-- Colonna sinistra per la descrizione -->
       <div class="profile-column description-left">
-        <h4>Su di me:</h4>
+        <h3><strong>Su di me:</strong></h3>
         <p class="profile-bio">
-          {{ user.descrizione }}
+          {{ user.descrizione ? user.descrizione : 'Descrizione non fornita' }}
         </p>
       </div>
       

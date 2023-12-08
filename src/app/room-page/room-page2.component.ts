@@ -15,6 +15,10 @@ import { catchError, map } from 'rxjs';
 import { differenceInDays } from 'date-fns';
 import { PhotoService } from '../services/PhotoService';
 import { CarrelloService } from '../services/CarrelloService';
+import { CookieService } from 'ngx-cookie-service';
+import { ValidationService } from '../services/ValidationService';
+import { MatDialog } from '@angular/material/dialog';
+import { RoomEditDialogComponent } from '../room-edit-dialog/room-edit-dialog.component';
 
 const WIFI_RED = `<svg height="200px" width="200px" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-5.12 -5.12 522.24 522.24" xml:space="preserve" fill="#000000" stroke="#000000" stroke-width="8.192"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#ff0000;} </style> <g> <path class="st0" d="M0,180.942l52.247,52.248c112.324-112.334,295.181-112.334,407.505,0L512,180.942 C370.839,39.763,141.16,39.763,0,180.942z"></path> <path class="st0" d="M67.904,248.857l52.248,52.247c74.926-74.926,196.768-74.926,271.695,0l52.247-52.247 C340.388,145.16,171.612,145.16,67.904,248.857z"></path> <path class="st0" d="M135.828,316.781l52.248,52.238c37.454-37.454,98.393-37.454,135.848,0l52.247-52.238 C309.919,250.538,202.081,250.538,135.828,316.781z"></path> <path class="st0" d="M203.752,384.695L256,436.942l52.247-52.247C279.41,355.858,232.589,355.858,203.752,384.695z"></path> </g> </g></svg>`;
 const WIFI_GREEN = `<svg height="200px" width="200px" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-5.12 -5.12 522.24 522.24" xml:space="preserve" fill="#000000" stroke="#000000" stroke-width="8.192"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#4bcd42;} </style> <g> <path class="st0" d="M0,180.942l52.247,52.248c112.324-112.334,295.181-112.334,407.505,0L512,180.942 C370.839,39.763,141.16,39.763,0,180.942z"></path> <path class="st0" d="M67.904,248.857l52.248,52.247c74.926-74.926,196.768-74.926,271.695,0l52.247-52.247 C340.388,145.16,171.612,145.16,67.904,248.857z"></path> <path class="st0" d="M135.828,316.781l52.248,52.238c37.454-37.454,98.393-37.454,135.848,0l52.247-52.238 C309.919,250.538,202.081,250.538,135.828,316.781z"></path> <path class="st0" d="M203.752,384.695L256,436.942l52.247-52.247C279.41,355.858,232.589,355.858,203.752,384.695z"></path> </g> </g></svg>`;
@@ -101,7 +105,8 @@ export interface GridItem {
     ]
 
 
-    constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private roomService: RoomService, private photoService: PhotoService, private carrelloService: CarrelloService, private route: ActivatedRoute, private router: Router) {
+
+    constructor(private dialog: MatDialog, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private roomService: RoomService, private photoService: PhotoService, private carrelloService: CarrelloService, private route: ActivatedRoute, private router: Router,private validationService: ValidationService, private cookieService: CookieService) {
         iconRegistry.addSvgIconLiteral('car-red', sanitizer.bypassSecurityTrustHtml(CAR_RED));
         iconRegistry.addSvgIconLiteral('car-green', sanitizer.bypassSecurityTrustHtml(CAR_GREEN));
         iconRegistry.addSvgIconLiteral('wifi-red', sanitizer.bypassSecurityTrustHtml(WIFI_RED));
@@ -136,17 +141,22 @@ export interface GridItem {
       {component: 'Letti', cols: 2, rows: 1, color: 'transparent'}
     ]
 
-    photos: string[]=[
+    photosplaceholder: string[]=[
       '/assets/bs5/img/test/A.png',
       '/assets/bs5/img/test/B.png',
       '/assets/bs5/img/test/C.png',
       
     ]
 
+    photos: string[]=[];
+
+    icons: string[]=[];
+    usernameAuth:string='';
 
 
 
     ngOnInit(): void {
+      this.usernameAuth=this.cookieService.get("username")
       this.getRoomId();
       
      
@@ -165,9 +175,41 @@ export interface GridItem {
     loadRoom(id: string): void{
       this.roomService.getRoom(id).subscribe(
         (stanza: Stanza) => {
-          this.room = stanza; 
-          this.photoService.getImageUrlObservable(this.room.nome, this.room.gestore).subscribe(url => {
-            this.photos.unshift(url);})
+          this.room = stanza;
+          this.icons.push(this.room.wifiserv ? this.iconsGreen[0] : this.iconsRed[0]);
+          this.icons.push(this.room.carserv ? this.iconsGreen[1] : this.iconsRed[1]);
+          this.icons.push(this.room.acserv ? this.iconsGreen[2] : this.iconsRed[2]);
+          this.photoService.showImage(this.room.id, this.room.gestore,0).subscribe((data : string)=>{ 
+            this.photos.push (data);
+            this.photoService.showImage(this.room.id, this.room.gestore,1).subscribe((data : string)=>{ 
+              if(data==""){
+                this.photos.push("assets/img/placeholderImage.png");
+              }else{
+                this.photos.push (data);
+              }
+            });
+            this.photoService.showImage(this.room.id, this.room.gestore,2).subscribe((data : string)=>{ 
+              if(data==""){
+                this.photos.push("assets/img/placeholderImage.png");
+              }else{
+                this.photos.push (data);
+              }
+            });
+            this.photoService.showImage(this.room.id, this.room.gestore,3).subscribe((data : string)=>{ 
+              if(data==""){
+                this.photos.push("assets/img/placeholderImage.png");
+              }else{
+                this.photos.push (data);
+              }
+            });
+            this.photoService.showImage(this.room.id, this.room.gestore,4).subscribe((data : string)=>{ 
+              if(data==""){
+                this.photos.push("assets/img/placeholderImage.png");
+              }else{
+                this.photos.push (data);
+              }
+            });
+          });
         },
         error => {
           this.goTo404();
@@ -182,6 +224,7 @@ export interface GridItem {
     }
 
     calcolaDifferenzaInGiorni(): void {
+
       const startDate = this.range.get('start')?.value;
       const endDate = this.range.get('end')?.value;
       if (startDate && endDate) {
@@ -191,24 +234,25 @@ export interface GridItem {
     }
 
     async prenota() {
+      console.log(this.photos);
       const startDate = this.range.get('start')?.value;
+      console.log(startDate);
       const endDate = this.range.get('end')?.value;
   
       if (startDate && endDate) {
         try {
           const result = await this.carrelloService.add(this.id, startDate, this.numeroGiorni);
-  
-          console.log("il numero è:" + result);
-  
           if (result === 1) {
             this.showNotification("Elemento aggiunto al carrello", true, false);
           } else if (result === 2) {
             this.showNotification("Operazione non riuscita: Stanza già occupata nel range delle date", false, false);
           } else if (result === 3) {
             this.showNotification("Operazione non riuscita: Stanza inesistente", false, false);
+          } else if (result === -2) {
+            this.showNotification("Devi essere autenticato per aggiungere al carrello", false, true);
           } else {
             this.showNotification("Operazione non riuscita: Errore generico", false, false);
-          }
+          } 
         } catch (error) {
           this.showNotification("Operazione non riuscita: Errore dal server", false, false);
         }
@@ -227,8 +271,47 @@ export interface GridItem {
             return 'WiFi non disponibile';
           case 'car-red':
             return 'Parcheggio non disponibile';
+          case 'ac-green':
+            return 'Aria condizionata disponibile';
+          case 'wifi-green':
+            return 'WiFi disponibile';
+          case 'car-green':
+            return 'Parcheggio disponibile';
           default:
             return '';
+        }
+      }
+
+      async edit() {
+        if( await this.validationService.check(this.usernameAuth)){
+        var _popup=this.dialog.open(RoomEditDialogComponent, {
+          width:"60%",
+          height:"80%",
+          data:{
+            room:this.room
+          }
+        })
+        _popup.afterClosed().subscribe(()=>{
+          location.reload();
+        })
+      } else {
+        this.router.navigate(['/login']);
+      }
+      }
+
+     async prenotazioni(){
+        if( await this.validationService.check(this.usernameAuth)){
+          var _popup=this.dialog.open(RoomEditDialogComponent, {
+            width:"60%",
+            height:"80%",
+            data:{
+              room:this.room
+            }
+          })
+          _popup.afterClosed().subscribe(()=>{
+          })
+        } else {
+          this.router.navigate(['/login']);
         }
       }
 

@@ -1,7 +1,7 @@
 export class SearchCriteria {
     regione!: string;
     tipoStanza!: string;
-    parcheggio!: boolean;
-    ariacondizionata!: boolean;
-    wifi!: boolean;
+    parcheggio: boolean = false;
+    ariacondizionata: boolean = false;
+    wifi: boolean = false;
   }

@@ -6,6 +6,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { ValidationService } from './ValidationService';
 import { ElementoCarrello } from '../entity/ElementoCarrello';
 import axios, { AxiosResponse } from 'axios';
+import { NotAuthError } from '../errors/NotAuthError';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,10 @@ import axios, { AxiosResponse } from 'axios';
         try {
           await this.validationService.refresh();
           const url = `${this.apiUrl}/add/${stanza_id}`;
-          const dateString = giorno.toISOString();
+          var day: Date = new Date();
+          day.setDate(giorno.getDate());
+          const dateString = day.toISOString();
+          console.log("ISOString "+dateString)
       
           const accessToken = this.cookieService.get('accessToken');
           const config = {
@@ -75,9 +79,16 @@ import axios, { AxiosResponse } from 'axios';
       
           return -2;
         } catch (error) {
+          if(error instanceof NotAuthError){
+            return -2
+          }
           if (axios.isAxiosError(error) && error.response && error.response.status === 0) {
             console.error('Errore di connessione rifiutata:', error);
             return -1;
+          }
+          if (axios.isAxiosError(error) && error.response && error.response.status === 452) {
+            console.error('Errore di connessione rifiutata:', error);
+            return 2;
           }
           console.error('Errore durante la richiesta:', error);
           return -1;

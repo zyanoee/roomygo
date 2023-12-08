@@ -1,0 +1,24 @@
+<div class="create-room">
+    <form>
+    <div class="create-form">
+        <div>
+          <label for="nome">Modifica Descrizione</label>
+          <input type="text" id="descrizione" name="descrizione" [(ngModel)]="descrizione">
+        </div>
+        <br>
+        <div>
+          <label for="image">Modifica la tua immagine del profilo</label>
+          <input type="file" id="image" name="image" (change)="handleImageInput($event)">
+        </div>
+        <br>
+        <button mat-raised-button color="primary" (click)="edit()">Modifica</button>
+        <button mat-raised-button color="warn" mat-dialog-close style="margin-left: 5px;">Chiudi</button>
+    </div>
+    </form>
+  
+    <div class="alert-overlay" *ngIf="showAlert">
+      <div class="alert-box" [ngClass]="{'success': successAlert&&!duj7, 'error': !successAlert&&!duj7, 'warning': !successAlert&&duj7}">
+        {{ alertMessage }}
+      </div>
+    </div>
+</div>

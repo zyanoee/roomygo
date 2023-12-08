@@ -13,7 +13,7 @@
             <mat-grid-list cols="12" rowHeight="300px">
                 <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'transparent'">
                     <div class="example-button-container">
-                        <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon" (click)="rimuovi(elm.id)">
+                        <button mat-mini-fab color="warn" (click)="rimuovi(elm.id)">
                           <mat-icon>clear</mat-icon>
                         </button>
                       </div>
@@ -29,8 +29,8 @@
                             
                             <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'transparent'">
                             <div class="iinternalMatGrid">
-                                    <h1>{{ getRoom(elm).nome }}</h1>
-                                    <h3>{{ getRoom(elm).indirizzo}}</h3>
+                                    <h1>{{ ""+this.stanze.get(elm.stanza_id.toString())?.nome }}</h1>
+                                    <h3>{{ ""+this.stanze.get(elm.stanza_id.toString())?.indirizzo}}</h3>
                                     <h3>{{ "Checkin: " + elm.giorno }}</h3>
                                     <h3>{{ "Notti: "+elm.ngiorni+", Prezzo per notte: "+elm.prezzo}}</h3>
                                 </div>
@@ -45,7 +45,7 @@
 
                 </mat-grid-tile>
                 <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'transparent'">
-                    
+
                 </mat-grid-tile>
                 <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'transparent'">
 
@@ -54,10 +54,33 @@
             </mat-grid-list>
         </div>
         </mat-grid-tile>
+        <div class="internalMatGrid" style="margin:15px;border-radius: 12px;">
+           
+        </div>
       </mat-grid-list>
+      <br>
+      <div class="internalMatGrid" style="margin:15px;border-radius: 15px;">
+      <mat-grid-list cols="3" rowHeight="100px" [style.background]="'lightblue'">
+        <mat-grid-tile colspan="1" rowspan="1" [style.background]="'lightblue'">
+
+        </mat-grid-tile>
+        <mat-grid-tile colspan="1" rowspan="1" [style.background]="'lightblue'">
+            <button mat-raised-button color="primary" (click)="ordina()">Ordina</button>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="1" rowspan="1" [style.background]="'lightblue'">
+            
+        </mat-grid-tile>
+    
+    </mat-grid-list>
+    </div>
 </div>
 <div>
 
 </div>
+<div class="alert-overlay" *ngIf="showAlert">
+    <div class="alert-box" [ngClass]="{'success': successAlert&&!warningAlert, 'error': !successAlert&&!warningAlert, 'warning': !successAlert&&warningAlert}">
+      {{ alertMessage }}
+    </div>
+  </div>
 </body>
 

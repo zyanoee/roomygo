@@ -6,6 +6,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { ValidationService } from '../services/ValidationService';
 import { PhotoService } from '../services/PhotoService';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { catchError } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -13,6 +14,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+
 
   username : string = "";
   authenticated : boolean = false;
@@ -33,14 +35,77 @@ export class NavbarComponent {
   
 
   async ngOnInit() {
-    const accessToken = this.cookieService.get('accessToken');
-    if (accessToken && (await this.validationService.validateToken(accessToken))) {
-      this.username = this.cookieService.get('username');
-      this.authenticated = true;
-    } else {
-      this.authenticated = false;
-      this.username = "";
+    
+  }
+
+  goHome() {
+    this.router.navigate(["/"])
+    }
+
+  async loginOrUser(){
+    try{
+      if(this.cookieService.get("accessToken") != "null"){
+        await this.validationService.refresh()
+      } else {
+        this.router.navigate(["/login"])
+      }
+      if(this.cookieService.get("accessToken") != "null"){
+        this.router.navigate(["/user/"+this.cookieService.get("username")]);
+      } else {
+        this.router.navigate(["/login"])
+      }
+    } catch(error) {
+      this.router.navigate(["/login"])
     }
   }
+
+  async loginOrCart(){
+    try{
+      if(this.cookieService.get("accessToken") != "null"){
+        await this.validationService.refresh()
+      } else {
+        this.router.navigate(["/login"])
+      }
+      if(this.cookieService.get("accessToken") != "null"){
+        this.router.navigate(["/user/"+this.cookieService.get("username")+"/cart"]);
+      } else {
+        this.router.navigate(["/login"])
+      }
+    } catch(error) {
+      this.router.navigate(["/login"])
+    }
+  }
+
+  async loginOrRoom(){
+    try{
+      if(this.cookieService.get("accessToken") != "null"){
+        await this.validationService.refresh()
+      } else {
+        this.router.navigate(["/login"])
+      }
+      if(this.cookieService.get("accessToken") != "null"){
+        this.router.navigate(["/user/"+this.cookieService.get("username")+"/addRoom"]);
+      } else {
+        this.router.navigate(["/login"])
+      }
+    } catch(error) {
+      this.router.navigate(["/login"])
+    }
+  }
+
+  async logout(){
+    try{
+      if(this.cookieService.get("accessToken") != "null"){
+        await this.validationService.refresh()
+      } else {
+      }
+      if(this.cookieService.get("accessToken") != "null" && this.cookieService.get("refreshToken") != "null"){
+        await this.validationService.logout()
+      }
+    } catch(error){
+
+    }
+  }
+
 
 }

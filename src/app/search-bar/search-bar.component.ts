@@ -12,18 +12,27 @@ export class SearchBarComponent {
 
   constructor(private formBuilder: FormBuilder) {}
 
+  @Output() reset: EventEmitter<void> = new EventEmitter<void>();
   @Output() search: EventEmitter<void> = new EventEmitter<void>();
   @Input()  criteria: SearchCriteria = new SearchCriteria();
   selectedRegion: string = '';
   selectedType: string = '';
+  selectedAriacondizionata: boolean = false;
   services = this.formBuilder.group({
-    parcheggio: false,
+    parcheggio:  false,
     ariacondizionata: false,
     wifi: false,
   });
 
   onSearchClick(): void {
+    this.criteria.ariacondizionata = this.services.get('ariacondizionata')!.value!
+    this.criteria.parcheggio = this.services.get('parcheggio')!.value!
+    this.criteria.wifi = this.services.get('wifi')!.value!
     this.search.emit();
+  }
+
+  onResetClick(): void {
+    this.reset.emit();
   }
 
   setRegion(regione: string) {
@@ -35,5 +44,7 @@ export class SearchBarComponent {
     this.criteria.tipoStanza = tipo.toLowerCase();
     this.selectedType = tipo;
   }
+
+  
 
 }

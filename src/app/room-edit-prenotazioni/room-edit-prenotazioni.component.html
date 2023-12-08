@@ -1,0 +1,70 @@
+<div class="container">
+    <mat-grid-list cols="1" rowHeight="300px" class="grid" gutterSize="5px">
+        <mat-grid-tile *ngFor="let elm of elementi" [colspan]="1" [rowspan]="1" [style.background]="'transparent'" class="background">
+        <div class="internalMatGrid" style="margin:15px;border-radius: 12px;">
+            <mat-grid-list cols="12" rowHeight="300px">
+                <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'transparent'">
+                    <div class="example-button-container">
+                      </div>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="11" [rowspan]="1" [style.background]="'transparent'">
+                    <div class="heightwidth" >
+                        <mat-grid-list cols="2" rowHeight="300px">
+                            <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'transparent'">
+                                <div class="square">
+                                    <img [src]="getUrl(elm)" class="immagine">
+                                </div>    
+                            </mat-grid-tile>
+                            
+                            <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'transparent'">
+                            <div class="iinternalMatGrid">
+                                    <h3>{{ "Prenotante: "+elm.nome+ " | @"+elm.username}}</h3>
+                                    <h3>{{ "Nome: "+elm.nomeStanza }}</h3>
+                                    <h3>{{ "Indirizzo: "+elm.indirizzo+" "+elm.regione}}</h3>
+                                    <h3>{{ "Checkin: " + elm.checkInData }}</h3>
+                                    <h3>{{ "CheckOut: "+elm.checkOutData+"" }}</h3>
+                                    <h3>{{ "Contatto Gestore: "+elm.numeroGestore}}</h3>
+                                </div>
+                            </mat-grid-tile>
+                            
+                        </mat-grid-list>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+            <mat-grid-list cols="3" rowHeight="150px" class="grid" gutterSize="5px">
+                <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'transparent'">
+
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'transparent'">
+
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'transparent'">
+
+                </mat-grid-tile>
+                
+            </mat-grid-list>
+        </div>
+        </mat-grid-tile>
+        <div class="internalMatGrid" style="margin:15px;border-radius: 12px;">
+           
+        </div>
+      </mat-grid-list>
+      <br>
+      <div class="internalMatGrid" style="margin:15px;border-radius: 15px;">
+      <mat-grid-list cols="3" rowHeight="100px" [style.background]="'lightblue'">
+        <mat-grid-tile colspan="1" rowspan="1" [style.background]="'lightblue'">
+
+        </mat-grid-tile>
+        <mat-grid-tile colspan="1" rowspan="1" [style.background]="'lightblue'">
+            <button mat-raised-button color="warn" mat-dialog-close>Chiudi</button>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="1" rowspan="1" [style.background]="'lightblue'">
+            
+        </mat-grid-tile>
+    
+    </mat-grid-list>
+    </div>
+</div>
+<div>
+
+</div>

@@ -34,6 +34,13 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import { CartPageComponent } from './cart-page/cart-page.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
+import { UserEditPageComponent } from './user-edit-page/user-edit-page.component';
+import { UserEditDialogComponent } from './user-edit-dialog/user-edit-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import { UserEditPrenotazioniComponent } from './user-edit-prenotazioni/user-edit-prenotazioni.component';
+import { UserEditStanzeComponent } from './user-edit-stanze/user-edit-stanze.component';
+import { RoomEditPrenotazioniComponent } from './room-edit-prenotazioni/room-edit-prenotazioni.component';
+import { RoomEditDialogComponent } from './room-edit-dialog/room-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +55,13 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
     NotFoundPageComponent,
     CartPageComponent,
     SearchBarComponent,
+    UserEditPageComponent,
+    UserEditDialogComponent,
+    UserEditPrenotazioniComponent,
+    UserEditStanzeComponent,
+    RoomEditPrenotazioniComponent,
+    RoomEditDialogComponent,
+    
     
   ],
 
@@ -70,6 +84,7 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
     MatToolbarModule,
     MatMenuModule,
     MatSlideToggleModule,
+    MatDialogModule,
     AppRoutingModule,
     BrowserModule,
     HttpClientModule,
