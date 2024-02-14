@@ -157,6 +157,7 @@ export interface GridItem {
 
 
     ngOnInit(): void {
+      const accessAuht = this.cookieService.get("accessToken")
       this.usernameAuth=this.cookieService.get("username")
       this.getRoomId();
       

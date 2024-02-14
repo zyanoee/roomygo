@@ -133,6 +133,7 @@ export class ValidationService {
       if(response.status === 200){
         this.cookieService.set("accessToken", response.data.accessToken, undefined, '/');
         this.cookieService.set("refreshToken", response.data.refreshToken, undefined, '/');
+        this.cookieService.set("username", "null", undefined, '/');
         return true;
       } else {
         return false;

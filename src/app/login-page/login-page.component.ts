@@ -25,7 +25,6 @@ export class LoginPageComponent {
 
   ngOnInit(){
     if(this.cookieService.check("accessToken")){
-      console.log("C'è");
       if(this.cookieService.get("accessToken") != "null") {
         this.router.navigate(["/"])
       }
