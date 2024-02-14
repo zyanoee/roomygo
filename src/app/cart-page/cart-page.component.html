@@ -33,6 +33,9 @@
                                     <h3>{{ ""+this.stanze.get(elm.stanza_id.toString())?.indirizzo}}</h3>
                                     <h3>{{ "Checkin: " + elm.giorno }}</h3>
                                     <h3>{{ "Notti: "+elm.ngiorni+", Prezzo per notte: "+elm.prezzo}}</h3>
+                                    <h3 [ngStyle]="{'color': elm.valido ? '' : 'red'}">
+                                        {{ elm.valido ? '' : 'NON VALIDO' }}
+                                      </h3>
                                 </div>
                             </mat-grid-tile>
                             

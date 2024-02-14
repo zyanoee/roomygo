@@ -24,8 +24,11 @@ export class LoginPageComponent {
   alertMessage = '';
 
   ngOnInit(){
-    if(this.cookieService.get("accessToken") != "null"){
-      this.router.navigate(["/"])
+    if(this.cookieService.check("accessToken")){
+      console.log("C'è");
+      if(this.cookieService.get("accessToken") != "null") {
+        this.router.navigate(["/"])
+      }
     }
   }
 
